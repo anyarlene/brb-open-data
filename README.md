@@ -1,6 +1,6 @@
 # brb-open-data
 
-This repository contains codes for performing ETL (Extract, Transform, Load) operations on data from [Link Text](https://brb.bi/)  
+This repository contains codes for performing ETL (Extract, Transform, Load) operations on data from [https://brb.bi/]  
 and creating visualizations based on the cleaned data.
 
 ## ETL (Extract, Transform, Load)
