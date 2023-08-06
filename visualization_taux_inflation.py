@@ -59,7 +59,7 @@ try:
     plt.tight_layout()
 
     # Create a new folder (if it doesn't exist)
-    new_folder = "dashboard_folder"
+    new_folder = "ti_charts_dashboards"
     if not os.path.exists(new_folder):
         os.makedirs(new_folder)
 
