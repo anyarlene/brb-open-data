@@ -60,7 +60,7 @@ try:
     plt.tight_layout()
 
     # Create a new folder (if it doesn't exist)
-    new_folder = "inflation_rate_dashboards"
+    new_folder = "inflation_dashboards"
     if not os.path.exists(new_folder):
         os.makedirs(new_folder)
 
