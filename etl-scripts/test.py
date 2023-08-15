@@ -29,17 +29,19 @@ data_long['Value'] = pd.to_numeric(data_long['Value'], errors='coerce')
 # Drop rows with NaN values in the "Value" column
 data_long.dropna(subset=['Value'], inplace=True)
 
-# Populate the "continent" column using the continent markers
+# Initialize variables for the current continent and total value
 current_continent = None
+continent_total = 0
+
+# Iterate through the DataFrame to populate the "continent" column and update Continent Total
 for idx, row in data_long.iterrows():
     if row['     Pays de destination'] in continent_markers:
         current_continent = continent_markers[row['     Pays de destination']]
-    if current_continent:
+        continent_total = 0  # Reset Continent Total for new continent
+    else:
         data_long.at[idx, 'continent'] = current_continent
-
-# Recompute the "Continent Total" column
-continent_totals = data_long.groupby('continent')['Value'].sum().to_dict()
-data_long['Continent Total'] = data_long['continent'].map(continent_totals)
+        continent_total += row['Value']
+        data_long.at[idx, 'Continent Total'] = continent_total
 
 # Create the 'cleaned_data' folder if it doesn't exist
 cleaned_folder = "cleaned_data"
@@ -52,5 +54,5 @@ csv_path = os.path.join(cleaned_folder, 'processed_data.csv')
 # Save the processed data to a CSV file
 data_long.to_csv(csv_path, index=False)
 
-# Display the restructured data
+# Display a subset of the DataFrame to verify
 print(data_long.head(20))

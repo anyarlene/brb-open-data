@@ -15,21 +15,24 @@ file_url = f"{BASE_URL}{RELATIVE_PATH}"
 
 response = requests.get(file_url)
 
+# Ensure the request was successful
+if response.status_code != 200:
+    raise Exception(f"Failed to download the file. HTTP Status Code: {response.status_code}")
+
 # Save the Excel file under the 'data' folder
 data_folder = "data"
 if not os.path.exists(data_folder):
     os.makedirs(data_folder)
 
-# Using a static filename without current date for the Excel file
-excel_filename = "Taux d'Inflation Juin 2023.xlsx"
+# Extract the filename from RELATIVE_PATH
+excel_filename = os.path.basename(RELATIVE_PATH)
 excel_path = os.path.join(data_folder, excel_filename)
 
 with open(excel_path, 'wb') as file:
     file.write(response.content)
 
 # Read, clean, and save the structured data to a CSV file
-file_path = os.path.join(data_folder, excel_filename)
-df = pd.read_excel(file_path, skiprows=9, engine='openpyxl')
+df = pd.read_excel(excel_path, skiprows=9, engine='openpyxl')
 
 headers = df.iloc[0]
 df = df[1:]
@@ -50,7 +53,7 @@ for column in df.columns[1:]:
     df[column] = df[column].astype(float)
 
 base_name = os.path.splitext(excel_filename)[0]
-formatted_name = base_name.lower().replace(' ', '_').replace('-', '_')
+formatted_name = base_name.lower().replace('%', '_').replace('-', '_')
 csv_filename = f"cleaned_{formatted_name}.csv"
 
 # Create the 'cleaned_data' folder if it doesn't exist
