@@ -23,7 +23,7 @@ if not os.path.exists(cleaned_folder):
 
 
 # Construct path to save the processes CSV
-csv_path = os.path.join(cleaned_folder, 'processed_data.csv')
+csv_path = os.path.join(cleaned_folder, 'processed_importations_tonnes.csv')
 # Save the processed data to a CSV file
 data_long.to_csv(csv_path, index=False)
 
