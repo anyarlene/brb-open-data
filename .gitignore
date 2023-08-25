@@ -1,2 +1,4 @@
 .env
-/etl-env
+
+etl-env/
+etl-env/
