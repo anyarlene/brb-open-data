@@ -8,10 +8,10 @@ import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 BASE_URL = config('BASE_URL')
-RELATIVE_PATH = config('RELATIVE_PATH')
+RELATIVE_PATH_INFLATION = config('RELATIVE_PATH_INFLATION')
 
 # Construct the full URL to fetch the file
-file_url = f"{BASE_URL}{RELATIVE_PATH}"
+file_url = f"{BASE_URL}{RELATIVE_PATH_INFLATION}"
 
 response = requests.get(file_url)
 
@@ -24,8 +24,8 @@ data_folder = "data"
 if not os.path.exists(data_folder):
     os.makedirs(data_folder)
 
-# Extract the filename from RELATIVE_PATH
-excel_filename = os.path.basename(RELATIVE_PATH)
+# Extract the filename from RELATIVE_PATH and replace '%' with '_'
+excel_filename = os.path.basename(RELATIVE_PATH_INFLATION).replace('%', '_')
 excel_path = os.path.join(data_folder, excel_filename)
 
 with open(excel_path, 'wb') as file:
@@ -53,7 +53,7 @@ for column in df.columns[1:]:
     df[column] = df[column].astype(float)
 
 base_name = os.path.splitext(excel_filename)[0]
-formatted_name = base_name.lower().replace('%', '_').replace('-', '_')
+formatted_name = base_name.lower().replace('-', '_')
 csv_filename = f"cleaned_{formatted_name}.csv"
 
 # Create the 'cleaned_data' folder if it doesn't exist
