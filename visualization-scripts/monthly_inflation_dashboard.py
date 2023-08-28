@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import urllib.parse
 
 # Adjust the file_path to point to the 'cleaned_data' folder
-file_path = os.path.join("cleaned_data", "cleaned_taux_20d_27inflation_20juin_202023.csv")
+file_path = os.path.join("cleaned_data", "cleaned_taux_20d_27inflation_20juillet_202023.csv")
 
 try:
     # Extract month_year from the CSV filename

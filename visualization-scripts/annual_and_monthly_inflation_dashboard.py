@@ -2,17 +2,21 @@ import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import re
+import urllib.parse
 
 # Modify the file_path to point to the 'cleaned_data' folder
-file_path = os.path.join("cleaned_data", "cleaned_taux_d'inflation_juin_2023.csv")
+file_path = os.path.join("cleaned_data", "cleaned_taux_20d_27inflation_20juillet_202023.csv")
 
 try:
     # Extract month_year from the CSV filename
-    base_name = os.path.basename(file_path)  # Extracts "cleaned_taux_d'inflation_juin_2023.csv"
-    match = re.search(r"_(\w+_\d{4})", base_name)
-    if match:
-        month_year = match.group(1)  # e.g., "juin_2023"
+    base_name = os.path.basename(file_path).replace(".csv", "")
+    decoded_name = urllib.parse.unquote(base_name)
+    parts = decoded_name.split("_")
+
+    if len(parts) >= 2:
+        month = parts[-2][2:]  # Remove the first 2 characters (e.g., "20")
+        year = parts[-1][-4:]  # Extract the last 4 characters
+        month_year = f"{month}_{year}"
     else:
         raise ValueError("Could not extract month and year from the filename!")
 

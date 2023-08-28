@@ -3,7 +3,7 @@ import re
 import numpy as np
 
 # Read the CSV file using the correct delimiter
-df_original = pd.read_csv("cleaned_data/processed_importations_tonnes.csv", sep=";")
+df_original = pd.read_csv("cleaned_data/processed_importation_tons.csv", sep=";")
 
 # Split the single column into multiple columns
 df_original[['destination_country', 'date', 'value']] = df_original['     Pays de destination,Date,Value'].str.split(',', expand=True)
@@ -57,9 +57,16 @@ for idx, row in df_original.iterrows():
     df_original.at[idx, 'continent_total'] = current_total
     df_original.at[idx, 'subcontinent_total'] = current_subtotal if current_subtotal else current_total
 
+
+# Remove prefixes from 'continent' and 'subcontinent' columns right after populating them
+df_original['continent'] = df_original['continent'].str.replace(r"^[IVX]+\.", "", regex=True).str.strip()
+df_original['subcontinent'] = df_original['subcontinent'].str.replace(r"^[0-9]+\.", "", regex=True).str.strip()
+
 # Drop rows that are continent headers, subregion headers, or TOTAL rows
-problematic_strings = ['I. EUROPE', 'II. ASIE', 'III. AFRIQUE', 'IV. AMERIQUE', 'V. OCEANIE', 'VI. PAYS NON SPECIFIES', '1. Union Européenne', '2. AUTRES', 'TOTAL']
-df_final = df_original[~df_original['destination_country'].str.strip().isin(problematic_strings)].copy()
+#problematic_strings_without_prefixes = ['EUROPE', 'ASIE', 'AFRIQUE', 'AMERIQUE', 'OCEANIE', 'PAYS NON SPECIFIES', 'Union Européenne', 'AUTRES', 'TOTAL']
+
+problematic_strings_with_prefixes = ['I. EUROPE', 'II. ASIE', 'III. AFRIQUE', 'IV. AMERIQUE', 'V. OCEANIE', 'VI. PAYS NON SPECIFIES', '1. Union Européenne', '2. AUTRES', 'TOTAL']
+df_final = df_original[~df_original['destination_country'].str.strip().isin(problematic_strings_with_prefixes)].copy()
 
 # Reset index for the final dataframe
 df_final.reset_index(drop=True, inplace=True)
@@ -81,7 +88,7 @@ df_final = df_final[desired_columns]
 #print(df_final.head(50))
 
 # Display the last few rows of the final dataframe for verification
-print(df_final.tail(50))
+#print(df_final.tail(50))
 
 # Save to CSV
-df_final.to_csv('cleaned_data/cleaned_importations_tonnes.csv', index=False)
+df_final.to_csv('cleaned_data/cleaned_importation_tons.csv', index=False)
