@@ -44,13 +44,15 @@ data_long['Date'] = pd.to_datetime(data_long['Date'])
 # Remove rows with NaN in 'Value' column
 data_long.dropna(subset=['Value'], inplace=True)
 
-# Create the 'cleaned_data' folder if it doesn't exist
-cleaned_folder = "cleaned_data"
-if not os.path.exists(cleaned_folder):
-    os.makedirs(cleaned_folder)
+# Create the 'processed_data' folder if it doesn't exist
+processed_folder = "processed_data"
+if not os.path.exists(processed_folder):
+    os.makedirs(processed_folder)
 
-# Construct path to save the processed CSV
-csv_path = os.path.join(cleaned_folder, 'processed_importation_bif.csv')
+# Extract core name from the original filename and construct the output filename
+core_name = "importation_bif"
+csv_filename = f"processed_{core_name}.csv"
+csv_path = os.path.join(processed_folder, csv_filename)
 
 # Save the processed data to a CSV file
 data_long.to_csv(csv_path, index=False)
