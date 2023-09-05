@@ -26,4 +26,4 @@ jobs:
         path: data  # Specify the path where the CSV file was saved in the ETL job
 
     - name: Run dashboard creation job
-      run: python generate_dashboard.py
+      run: python python_script.py

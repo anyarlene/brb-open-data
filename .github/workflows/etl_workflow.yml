@@ -31,4 +31,4 @@ jobs:
       env:
         BASE_URL: ${{ secrets.BASE_URL }}
         RELATIVE_PATH: ${{ secrets.RELATIVE_PATH }}
-      run: python etl_taux_inflation.py  # Replace with the name of your ETL script file
+      run: python python_script.py  # Replace with the name of your ETL script file
