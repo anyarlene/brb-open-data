@@ -23,7 +23,7 @@ class InflationDataModel:
             raise Exception(f"Failed to download the file. HTTP Status Code: {response.status_code}")
 
         # Set path to 'data' folder located outside 'src'
-        data_folder = os.path.join("..", "data")
+        data_folder = os.path.join("..", "..", "data")
 
         # Extract the filename from RELATIVE_PATH and replace '%' with '_'
         excel_filename = os.path.basename(self.RELATIVE_PATH_INFLATION).replace('%', '_')
@@ -64,8 +64,8 @@ class InflationDataModel:
         formatted_name = base_name.lower().replace('-', '_')
         csv_filename = f"cleaned_{formatted_name}.csv"
 
-        # Set path to 'cleaned_data' folder located outside 'src'
-        cleaned_folder = os.path.join("..", "cleaned_data")
+        # Set path to 'cleaned_data' folder
+        cleaned_folder = os.path.join("..", "..", "cleaned_data")
 
         # Save the cleaned DataFrame as a CSV
         csv_path = os.path.join(cleaned_folder, csv_filename)

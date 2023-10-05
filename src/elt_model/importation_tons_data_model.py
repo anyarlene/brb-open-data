@@ -13,8 +13,8 @@ class ImportationTonsDataModel:
         self.full_url = self.BASE_URL + self.RELATIVE_PATH_IMPORTATION_TONS
         
         # Setting paths to the existing 'data' and 'cleaned_data'
-        self.data_folder = "../data"
-        self.cleaned_folder = "../cleaned_data"
+        self.data_folder = os.path.join("..", "..", "data")
+        self.cleaned_folder = os.path.join("..", "..", "cleaned_data")
         
         # Initializing other instance variables
         self.excel_filename = None
