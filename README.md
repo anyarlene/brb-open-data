@@ -6,20 +6,28 @@ This repository contains models and scripts for performing ELT (Extract, Load, T
 
 ### Models responsible for Extracting, Loading, and Transforming data.
 
+- `importation_bif_data_model.py`
 - `importation_tons_data_model.py`
 - `inflation_data_model.py`
 
 
-### Scripts used to run the complete ELT models
+#### Scripts used to run the complete ELT models
 
+- `run_importations_bif_model.py`
 - `run_importations_tons_model.py`
 - `run_inflation_model.py`
 
 
 ### Handle parsing and normalization to achieve a final structured format of the data
 
-- `parse_normalize_importation_tons.py`
-- `parse_normalize_importation_bif.py`
+- `pn_importation_bif_model.py`
+- `pn_importation_tons_model.py`
+
+
+#### Scripts used to run the complete parsing and normalizing models
+
+- `run_pn_importation_bif_model.py`
+- `run_pn_importation_tons_model.py`
 
 
 ## Visualizations
