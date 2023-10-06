@@ -41,7 +41,7 @@ try:
     plt.savefig(heatmap_path)
     print(f"Heatmap saved successfully at: {heatmap_path}")
     # Uncomment below if you want to display the plots
-    #plt.show()
+    plt.show()
 
 except FileNotFoundError:
     print("Error: The file 'cleaned_importation_tons.csv' was not found.")

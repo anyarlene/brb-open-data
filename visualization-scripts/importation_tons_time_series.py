@@ -46,7 +46,7 @@ try:
     save_path = os.path.join(dashboard_folder, 'continent_time_series_plot.png')
     plt.savefig(save_path)
     print(f"Plot saved successfully at: {save_path}")
-    #plt.show()
+    plt.show()
 
 except FileNotFoundError:
     print("Error: The file 'cleaned_importation_tons.csv' was not found.")

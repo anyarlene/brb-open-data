@@ -5,33 +5,43 @@ from decouple import config
 
 class InflationDataModel:
 
-    # Set up class variables for BASE URL and relative path to inflation data
-    BASE_URL = config('BASE_URL')
-    RELATIVE_PATH_INFLATION = config('RELATIVE_PATH_INFLATION')
-
     def __init__(self):
+
+        # Set up variables for BASE URL and relative path to inflation data
+        self.BASE_URL = config('BASE_URL')
+        self.RELATIVE_PATH_INFLATION = config('RELATIVE_PATH_INFLATION')
+
+        # Constructing the full URL for the data source
+        self.full_url = self.BASE_URL + self.RELATIVE_PATH_INFLATION
         # Initialize the DataFrame to store data
+        self.data_folder = os.path.join("..", "..", "data")
+        self.cleaned_folder = os.path.join("..", "..", "processed_data")
+
+        # Initializing other instance variables
+        self.excel_filename = os.path.basename(self.RELATIVE_PATH_INFLATION).replace('%', '_')
         self.df = None
 
     def download_data(self):
         # Construct the full URL to fetch the file
-        file_url = f"{self.BASE_URL}{self.RELATIVE_PATH_INFLATION}"
-        response = requests.get(file_url)
+        #file_url = f"{self.BASE_URL}{self.RELATIVE_PATH_INFLATION}"
+        response = requests.get(self.full_url)
 
         # Ensure the request was successful
         if response.status_code != 200:
             raise Exception(f"Failed to download the file. HTTP Status Code: {response.status_code}")
 
         # Set path to 'data' folder located outside 'src'
-        data_folder = os.path.join("..", "..", "data")
+        #data_folder = os.path.join("..", "..", "data")
 
         # Extract the filename from RELATIVE_PATH and replace '%' with '_'
-        excel_filename = os.path.basename(self.RELATIVE_PATH_INFLATION).replace('%', '_')
-        self.excel_path = os.path.join(data_folder, excel_filename)
+        #self.excel_filename = os.path.basename(self.RELATIVE_PATH_INFLATION).replace('%', '_')
+        self.excel_path = os.path.join(self.data_folder, self.excel_filename)
 
         # Save the downloaded file locally
         with open(self.excel_path, 'wb') as file:
             file.write(response.content)
+        
+        return self.excel_path  # Return the path to the downloaded file
 
     def clean_data(self):
         # Read the Excel data, skipping initial rows
@@ -58,17 +68,19 @@ class InflationDataModel:
         for column in self.df.columns[1:]:
             self.df[column] = self.df[column].astype(float)
 
+        return self.df
+
     def save_csv(self):
         # Format the filename for the cleaned CSV
         base_name = os.path.splitext(os.path.basename(self.excel_path))[0]
         formatted_name = base_name.lower().replace('-', '_')
-        csv_filename = f"cleaned_{formatted_name}.csv"
+        csv_filename = f"processed_{formatted_name}.csv"
 
         # Set path to 'cleaned_data' folder
-        cleaned_folder = os.path.join("..", "..", "cleaned_data")
+        #cleaned_folder = os.path.join("..", "..", "processed_data")
 
         # Save the cleaned DataFrame as a CSV
-        csv_path = os.path.join(cleaned_folder, csv_filename)
+        csv_path = os.path.join(self.cleaned_folder, csv_filename)
         self.df.to_csv(csv_path, index=False)
 
         # Return the path to the saved CSV

@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import urllib.parse
 
 # Adjust the file_path to point to the 'cleaned_data' folder
-file_path = os.path.join("cleaned_data", "cleaned_taux_20d_27inflation_20juillet_202023.csv")
+file_path = os.path.join("processed_data", "processed_taux_20d_27inflation_20juillet_202023.csv")
 
 try:
     # Extract month_year from the CSV filename
@@ -60,7 +60,7 @@ try:
     fig.savefig(save_path)
 
     # Uncomment below if you want to display the plots
-    #plt.show()
+    plt.show()
 
 except FileNotFoundError:
     print(f"File {file_path} not found.")
