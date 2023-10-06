@@ -14,7 +14,7 @@ class ImportationTonsDataModel:
         
         # Setting paths to the existing 'data' and 'cleaned_data'
         self.data_folder = os.path.join("..", "..", "data")
-        self.cleaned_folder = os.path.join("..", "..", "cleaned_data")
+        self.cleaned_folder = os.path.join("..", "..", "processed_data")
         
         # Initializing other instance variables
         self.excel_filename = None

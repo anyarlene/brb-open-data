@@ -62,10 +62,10 @@ class InflationDataModel:
         # Format the filename for the cleaned CSV
         base_name = os.path.splitext(os.path.basename(self.excel_path))[0]
         formatted_name = base_name.lower().replace('-', '_')
-        csv_filename = f"cleaned_{formatted_name}.csv"
+        csv_filename = f"processed_{formatted_name}.csv"
 
         # Set path to 'cleaned_data' folder
-        cleaned_folder = os.path.join("..", "..", "cleaned_data")
+        cleaned_folder = os.path.join("..", "..", "processed_data")
 
         # Save the cleaned DataFrame as a CSV
         csv_path = os.path.join(cleaned_folder, csv_filename)
