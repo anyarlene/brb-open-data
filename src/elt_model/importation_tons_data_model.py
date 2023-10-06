@@ -14,7 +14,7 @@ class ImportationTonsDataModel:
         
         # Setting paths to the existing 'data' and 'cleaned_data'
         self.data_folder = os.path.join("..", "..", "data")
-        self.cleaned_folder = os.path.join("..", "..", "processed_data")
+        self.processed_folder = os.path.join("..", "..", "processed_data")
         
         # Initializing other instance variables
         self.excel_filename = None
@@ -59,7 +59,7 @@ class ImportationTonsDataModel:
 
     def saveProcessedData(self):
         # Constructing the path to save the processed data
-        csv_path = os.path.join(self.cleaned_folder, 'processed_importation_tons.csv')
+        csv_path = os.path.join(self.processed_folder, 'processed_importation_tons.csv')
         
         # Saving the processed data to CSV
         self.data_long.to_csv(csv_path, index=False)
