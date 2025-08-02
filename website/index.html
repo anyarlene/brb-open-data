@@ -5,33 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BRB Open Data Visualization</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Helvetica, Arial, sans-serif;
-        line-height: 1.6;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 2rem;
-        color: #333;
-      }
-      h1,
-      h2 {
-        color: #2c3e50;
-      }
-      a {
-        color: #3498db;
-      }
-      .container {
-        margin-bottom: 2rem;
-      }
-      .chart-container {
-        position: relative;
-        height: 400px;
-        width: 100%;
-        margin: 20px 0;
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div class="container">
@@ -68,101 +42,6 @@
         <!-- Charts will be dynamically inserted here -->
       </div>
 
-      <script>
-        // Function to create a chart container
-        function createChartContainer(id) {
-          const container = document.createElement("div");
-          container.className = "chart-container";
-          const canvas = document.createElement("canvas");
-          canvas.id = id;
-          container.appendChild(canvas);
-          return container;
-        }
-
-        // Function to create a chart
-        async function createChart(jsonFile) {
-          try {
-            const response = await fetch(`data/${jsonFile}`);
-            const chartData = await response.json();
-
-            const chartId = jsonFile.replace(".json", "");
-            const container = createChartContainer(chartId);
-            document.getElementById("charts-grid").appendChild(container);
-
-            const ctx = document.getElementById(chartId).getContext("2d");
-            new Chart(ctx, {
-              type: chartData.type,
-              data: chartData.data,
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  title: {
-                    display: true,
-                    text: chartData.title,
-                  },
-                  tooltip: {
-                    enabled: true,
-                  },
-                },
-                scales:
-                  chartData.type !== "pie" && chartData.type !== "radar"
-                    ? {
-                        y: {
-                          beginAtZero: true,
-                        },
-                      }
-                    : {},
-              },
-            });
-
-            // Add description
-            const descriptionEl = document.createElement("p");
-            descriptionEl.className = "chart-description";
-            descriptionEl.textContent = chartData.description;
-            container.appendChild(descriptionEl);
-          } catch (error) {
-            console.error(`Error loading chart from ${jsonFile}:`, error);
-          }
-        }
-
-        // List of JSON files to load
-        const chartFiles = [
-          "monthly_imports.json",
-          "sector_distribution.json",
-          "country_comparison.json",
-          "quarterly_growth.json",
-          "yearly_comparison.json",
-        ];
-
-        // Load all charts
-        chartFiles.forEach((file) => createChart(file));
-      </script>
-
-      <style>
-        #charts-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-          gap: 2rem;
-          margin: 2rem 0;
-        }
-
-        .chart-container {
-          background: white;
-          padding: 1rem;
-          border-radius: 8px;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-          margin-bottom: 1rem;
-        }
-
-        .chart-description {
-          margin-top: 1rem;
-          font-size: 0.9rem;
-          color: #666;
-          text-align: center;
-        }
-      </style>
-
       <h2>Contributing</h2>
       <p>
         We welcome contributions! Please see our contribution guidelines for
@@ -172,5 +51,6 @@
       <hr />
       <p><em>This is an open data project maintained by the community.</em></p>
     </div>
+    <script src="scripts.js"></script>
   </body>
 </html>
