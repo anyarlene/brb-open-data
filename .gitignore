@@ -1,3 +1,5 @@
 .env
 elt-env/
 elt_scripts/
+*.pyc
+data/*
