@@ -26,16 +26,10 @@ poetry install
 
 ## Step 1: Downloading the Data
 
-To download the latest data from the BRB website, you can run either of these commands:
+To download the latest data from the BRB website, run:
 
 ```bash
 poetry run download-all
-```
-
-or
-
-```bash
-poetry run python src/brb_open_data/etl/download_manager.py
 ```
 
 This will:
@@ -49,13 +43,13 @@ This will:
 After downloading the data, you need to process it into a more useful format. Run this command:
 
 ```bash
-poetry run python src/brb_open_data/parse/importation_bif_parser.py -i PATH_TO_EXCEL_FILE
+poetry run parse-importation-bif -i PATH_TO_EXCEL_FILE
 ```
 
 Replace `PATH_TO_EXCEL_FILE` with the path to the Excel file that was just downloaded. For example:
 
 ```bash
-poetry run python src/brb_open_data/parse/importation_bif_parser.py -i data/raw/importation_bif/29686_IV.5.Importations_20_20par_20pays_20de_20provenance_20_28en_20BIF_29_20250802.xlsx
+poetry run parse-importation-bif -i data/raw/importation_bif/29686_IV.5.Importations_20_20par_20pays_20de_20provenance_20_28en_20BIF_29_20250802.xlsx
 ```
 
 This will:
@@ -79,8 +73,9 @@ This will:
    - You might need to add Poetry to your PATH
    - Run this command:
      ```bash
-     export PATH="/Users/YOUR_USERNAME/.local/bin:$PATH"
+     export PATH="$HOME/.local/bin:$PATH"
      ```
+   - For permanent setup, add this line to your `~/.zshrc` file
 
 3. **Can't find the input file**
    - Make sure you're using the correct path to the Excel file
