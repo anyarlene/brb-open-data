@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "brb-open-data"
+version = "0.1.0"
+description = "Automated ETL/Analytics/ML for Burundi Central Bank data"
+authors = ["anyarlene <anyarlene.niyubahwe@hotmail.com>"]
+readme = "README.md"
+license = "MIT"
+# Tell Poetry to look under src/ for your package
+packages = [
+  { include = "brb_open_data", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.12,<4.0"
+requests = ">=2.32.4,<3.0.0"
+beautifulsoup4 = ">=4.13.4,<5.0.0"
+pyyaml = ">=6.0.2,<7.0.0"
+# add others as needed
+pandas = "^2.3.0"
+openpyxl = "^3.1.5"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0"
+black = "^23.0"
+isort = "^5.0"
+flake8 = "^6.0"
+pre-commit = "^3.0"
+
+[tool.poetry.scripts]
+download-all = "brb_open_data.etl.download_manager:main"
+parse-importation-bif = "brb_open_data.parse.importation_bif_parser:main"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,8 @@
+title: BRB Open Data Visualization
+description: Visualizing banking data from the Bank of the Republic of Burundi
+baseurl: ""
+url: ""
+
+# Build settings
+markdown: kramdown
+theme: minima

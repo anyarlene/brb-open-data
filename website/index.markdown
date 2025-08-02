@@ -1,0 +1,41 @@
+---
+layout: home
+title: BRB Open Data Visualization
+---
+
+# BRB Open Data Visualization
+
+Welcome to the BRB (Bank of the Republic of Burundi) Open Data Visualization project. This project aims to provide transparent access to and visualization of banking data from Burundi.
+
+## Available Data
+
+Our project currently includes:
+
+- Importation data analysis
+- Banking sector statistics
+- Financial indicators
+
+## Project Structure
+
+This project is organized into several key components:
+
+- **ETL Pipeline**: Data extraction and transformation processes
+- **Analytics**: Data analysis and statistical computations
+- **Parsing**: Custom parsers for various data formats
+
+## Data Visualizations
+
+_Coming soon: Interactive visualizations of banking sector data_
+
+## Documentation
+
+- [How to Run Scripts](docs/how_to_run_scripts.md)
+- [Data Sources](data/README.md)
+
+## Contributing
+
+We welcome contributions! Please see our contribution guidelines for more information.
+
+---
+
+_This is an open data project maintained by the community._
