@@ -1,9 +1,3 @@
 {
-  "charts": [
-    "monthly_imports.json",
-    "sector_distribution.json",
-    "country_comparison.json",
-    "quarterly_growth.json",
-    "yearly_comparison.json"
-  ]
+  "charts": ["monthly_imports_by_country.json"]
 }

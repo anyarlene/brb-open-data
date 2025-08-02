@@ -14,42 +14,80 @@ async function createChart(jsonFile) {
     const response = await fetch(`data/${jsonFile}`);
     const chartData = await response.json();
 
-    const chartId = jsonFile.replace(".json", "");
-    const container = createChartContainer(chartId);
-    document.getElementById("charts-grid").appendChild(container);
+    // Handle both single chart and multi-chart (yearly) data
+    if (
+      typeof chartData === "object" &&
+      chartData !== null &&
+      Object.keys(chartData).length > 0
+    ) {
+      // If the data has years as keys, create a chart for each year
+      if (Object.keys(chartData)[0].match(/^\d{4}$/)) {
+        // Sort years in ascending order
+        const years = Object.keys(chartData).sort();
 
-    const ctx = document.getElementById(chartId).getContext("2d");
-    new Chart(ctx, {
-      type: chartData.type,
-      data: chartData.data,
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          title: {
-            display: true,
-            text: chartData.title,
-          },
-          tooltip: {
-            enabled: true,
-          },
-        },
-        scales:
-          chartData.type !== "pie" && chartData.type !== "radar"
-            ? {
-                y: {
-                  beginAtZero: true,
-                },
-              }
-            : {},
-      },
-    });
+        for (const year of years) {
+          const yearData = chartData[year];
+          const chartId = `${jsonFile.replace(".json", "")}-${year}`;
+          const container = createChartContainer(chartId);
+          document.getElementById("charts-grid").appendChild(container);
 
-    // Add description
-    const descriptionEl = document.createElement("p");
-    descriptionEl.className = "chart-description";
-    descriptionEl.textContent = chartData.description;
-    container.appendChild(descriptionEl);
+          const ctx = document.getElementById(chartId).getContext("2d");
+          new Chart(ctx, {
+            type: yearData.type,
+            data: yearData.data,
+            options: {
+              ...yearData.options,
+              responsive: true,
+              maintainAspectRatio: false,
+            },
+          });
+
+          // Add description
+          const descriptionEl = document.createElement("p");
+          descriptionEl.className = "chart-description";
+          descriptionEl.textContent = yearData.description;
+          container.appendChild(descriptionEl);
+        }
+      } else {
+        // Handle single chart data (existing logic)
+        const chartId = jsonFile.replace(".json", "");
+        const container = createChartContainer(chartId);
+        document.getElementById("charts-grid").appendChild(container);
+
+        const ctx = document.getElementById(chartId).getContext("2d");
+        new Chart(ctx, {
+          type: chartData.type,
+          data: chartData.data,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              title: {
+                display: true,
+                text: chartData.title,
+              },
+              tooltip: {
+                enabled: true,
+              },
+            },
+            scales:
+              chartData.type !== "pie" && chartData.type !== "radar"
+                ? {
+                    y: {
+                      beginAtZero: true,
+                    },
+                  }
+                : {},
+          },
+        });
+
+        // Add description
+        const descriptionEl = document.createElement("p");
+        descriptionEl.className = "chart-description";
+        descriptionEl.textContent = chartData.description;
+        container.appendChild(descriptionEl);
+      }
+    }
   } catch (error) {
     console.error(`Error loading chart from ${jsonFile}:`, error);
   }
