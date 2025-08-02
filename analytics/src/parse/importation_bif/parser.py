@@ -66,10 +66,15 @@ class ImportationParser:
 
         df = df[valid_countries].copy()
 
-        # Add continent column
+                # Add continent column
         df['continent'] = df['country'].map(self.country_map)
 
-                # Format column names
+        # Convert numeric columns to float, replacing non-numeric and empty values with 0.0
+        numeric_cols = [col for col in df.columns if col not in ['country', 'continent']]
+        for col in numeric_cols:
+            df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0.0)
+
+        # Format column names
         df.columns = [self.format_column_name(col) for col in df.columns]
 
         # Reorder columns
