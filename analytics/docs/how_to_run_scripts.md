@@ -40,26 +40,30 @@ This will:
 
 ## Step 2: Processing the Data
 
-After downloading the data, you need to process it into a more useful format. Run this command:
+After downloading the data, you need to process it into a more useful format. The parser will automatically find and process the most recent Excel file in the `data/raw/importation_bif` folder.
+
+Run this command:
 
 ```bash
-poetry run parse-importation-bif -i PATH_TO_EXCEL_FILE
-```
-
-Replace `PATH_TO_EXCEL_FILE` with the path to the Excel file that was just downloaded. For example:
-
-```bash
-poetry run parse-importation-bif -i data/raw/importation_bif/29686_IV.5.Importations_20_20par_20pays_20de_20provenance_20_28en_20BIF_29_20250802.xlsx
+poetry run python src/parse/importation_bif/parser.py
 ```
 
 This will:
 
-- Read the Excel file
-- Convert it into several easy-to-use formats
-- Save the processed data in the `data/parsed/importation_bif` folder as:
-  - Excel file (`.xlsx`)
-  - CSV files (`.csv`)
-  - JSON files (`.json`)
+- Find the most recent Excel file in `data/raw/importation_bif`
+- Extract data for countries specified in `countries.csv`
+- Convert dates to YYYY-MM format
+- Convert all numeric values to decimal format
+- Save the processed data in `data/parsed/importation_bif` as:
+  - A CSV file named with today's date (e.g., `2025-08-03-monthly.csv`)
+  - Format: continent,country,YYYY-MM columns with decimal values
+
+The output CSV will contain:
+
+- Only data for countries listed in `countries.csv`
+- All numeric values in decimal format
+- Empty or invalid values replaced with 0.0
+- Dates in YYYY-MM format
 
 ## Common Problems and Solutions
 
