@@ -6,3 +6,20 @@ url: ""
 # Build settings
 markdown: kramdown
 theme: minima
+
+# Exclude unnecessary files
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - .jekyll-cache/
+  - .sass-cache/
+  - .git/
+  - .github/
+  - node_modules/
+  - vendor/
+
+# Disable unnecessary features
+show_excerpts: false
+plugins: [] # Disable all plugins
+feed:
+  enabled: false # Explicitly disable feed generation
