@@ -55,16 +55,21 @@ async function createChart(jsonFile) {
   }
 }
 
-// List of JSON files to load
-const chartFiles = [
-  "monthly_imports.json",
-  "sector_distribution.json",
-  "country_comparison.json",
-  "quarterly_growth.json",
-  "yearly_comparison.json",
-];
+// Function to fetch and load all JSON files from the data directory
+async function loadAllCharts() {
+  try {
+    // Fetch the list of chart files from chart_files.json
+    const response = await fetch("data/chart_files.json");
+    const { charts } = await response.json();
+
+    // Create charts for each JSON file in the list
+    for (const file of charts) {
+      await createChart(file);
+    }
+  } catch (error) {
+    console.error("Error loading charts:", error);
+  }
+}
 
 // Load all charts when the document is ready
-document.addEventListener("DOMContentLoaded", () => {
-  chartFiles.forEach((file) => createChart(file));
-});
+document.addEventListener("DOMContentLoaded", loadAllCharts);
