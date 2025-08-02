@@ -20,33 +20,39 @@ def transform_data():
     months = ["January", "February", "March", "April", "May", "June",
               "July", "August", "September", "October", "November", "December"]
 
+    # Define continent colors (using consistent colors for better visualization)
+    continent_colors = {
+        "AFRIQUE": "#2ecc71",  # Green
+        "AMERIQUE": "#3498db",  # Blue
+        "ASIE": "#e74c3c",     # Red
+        "EUROPE": "#f1c40f",   # Yellow
+        "OCEANIE": "#9b59b6"   # Purple
+    }
+
     # Transform data for each year
     chart_data = {}
     for year, year_data in source_data.items():
-        # Get top 10 countries by total value
-        country_totals = {}
+        # Get all continents (they should be consistent across months)
+        continents = set()
         for month_data in year_data.values():
-            for country, value in month_data.items():
-                country_totals[country] = country_totals.get(country, 0) + value
-
-        top_countries = sorted(country_totals.items(), key=lambda x: x[1], reverse=True)[:10]
-        top_country_names = [c[0] for c in top_countries]
+            continents.update(month_data.keys())
+        continents = sorted(list(continents))
 
         # Prepare datasets
         datasets = []
-        for country in top_country_names:
+        for continent in continents:
             dataset = {
-                "label": country,
-                "data": [year_data.get(month, {}).get(country, 0) for month in months],
-                "backgroundColor": generate_color()
+                "label": continent,
+                "data": [year_data.get(month, {}).get(continent, 0) for month in months],
+                "backgroundColor": continent_colors.get(continent, generate_color())
             }
             datasets.append(dataset)
 
         # Create chart configuration
         chart_data[year] = {
             "type": "bar",
-            "title": "Top Trading Partners",
-            "description": "Import values from top trading partner countries",
+            "title": "Imports by Continent",
+            "description": "Monthly import values grouped by continent",
             "data": {
                 "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -57,7 +63,7 @@ def transform_data():
                 "plugins": {
                     "title": {
                         "display": True,
-                        "text": f"Top Trading Partners – {year}"
+                        "text": f"Imports by Continent – {year}"
                     },
                     "legend": {
                         "position": "top"
