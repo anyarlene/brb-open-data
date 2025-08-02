@@ -1,36 +1,68 @@
 # brb-open-data
 
-This repository contains models and scripts for performing ELT (Extract, Load, Transform) operations on data from [BRB](https://www.brb.bi/) and creating visualizations based on the cleaned data.
+This repository contains an automated data pipeline for collecting, processing, and analyzing economic data from the Bank of the Republic of Burundi ([BRB](https://www.brb.bi/)). The project focuses on transforming raw economic indicators into structured, analyzable datasets with a particular emphasis on importation data and inflation rates.
 
-## ELT (Extract, Load, Transform)
+## Project Structure
 
-### Models responsible for Extracting, Loading, and Transforming data.
+The project is organized into several key components:
 
-- `importation_bif_data_model.py`
-- `importation_tons_data_model.py`
-- `inflation_data_model.py`
+### 1. Data Collection (ETL Pipeline)
 
-#### Scripts used to run the complete ELT models
+The ETL (Extract, Transform, Load) pipeline automatically:
 
-- `run_importations_bif_model.py`
-- `run_importations_tons_model.py`
-- `run_inflation_model.py`
+- Downloads data from BRB's website using configurable source definitions
+- Versions and stores raw data files with timestamps
+- Processes multiple economic indicators including:
+  - Importation data in BIF (Burundian Franc)
+  - Importation data in Tons
+  - Inflation rates
 
-### Handle parsing and normalization to achieve a final structured format of the data
+### 2. Data Processing
 
-- `pn_importation_bif_model.py`
-- `pn_importation_tons_model.py`
+The processing pipeline includes:
 
-#### Scripts used to run the complete parsing and normalizing models
+#### Parsing and Normalization
 
-- `run_pn_importation_bif_model.py`
-- `run_pn_importation_tons_model.py`
+- Handles complex Excel file structures with multiple sheets
+- Normalizes French abbreviations and special characters
+- Processes hierarchical data (continents, subcontinents, countries)
+- Generates both structured (CSV/Excel) and JSON outputs
 
-## Visualizations
+#### Data Models
 
-Once the data has been processed and cleaned, we can create visualizations to gain insights and better understand the data. The repository contains Python scripts that creates various charts and plots based on the cleaned data:
+- `importation_bif_data_model.py`: Processes importation data in BIF
+- `importation_tons_data_model.py`: Processes importation data in metric tons
+- `inflation_data_model.py`: Processes inflation rate data
 
-- `annual_and_monthly_inflation_dashboard.py`
-- `monthly_inflation_dashboard.py`
-- `importation_tons_time_series.py`
-- `heatmap_importation_tons.py`
+### 3. Data Analysis & Visualization
+
+The project includes several visualization tools for analyzing the processed data:
+
+#### Inflation Analysis
+
+- `annual_and_monthly_inflation_dashboard.py`: Combined view of annual and monthly trends
+- `monthly_inflation_dashboard.py`: Detailed monthly inflation analysis
+
+#### Import Analysis
+
+- `importation_tons_time_series.py`: Time series analysis of import volumes
+- `heatmap_importation_tons.py`: Heatmap visualization of import patterns
+
+## Technical Details
+
+- Built with Python using pandas for data processing
+- Automated data downloads with configurable source definitions
+- Secure HTTPS connections with certificate verification
+- Structured data output in multiple formats (Excel, CSV, JSON)
+- Versioned data storage with timestamp-based naming
+
+## Data Sources
+
+Currently configured data sources:
+
+- BRB Importation Data (https://www.brb.bi/node/477)
+- Additional sources can be configured in `config/sources.yml`
+
+## Getting Started
+
+For information on how to run the scripts and process data, please refer to the documentation in `docs/how_to_run_scripts.md`.
