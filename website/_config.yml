@@ -10,7 +10,6 @@ theme: minima
 # Sass settings
 sass:
   style: compressed
-  implementation: sass-embedded
   sass_dir: _sass
 
 # Exclude unnecessary files
