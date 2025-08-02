@@ -91,6 +91,35 @@ The output JSON will contain:
 - All values aggregated from country-level data
 - Dates organized by year and month names
 
+### Step 2.3: Generate Chart Data
+
+Finally, transform the continent-grouped data into a format suitable for visualization. Run:
+
+```bash
+poetry run python src/parse/importation_bif/load.py
+```
+
+This will:
+
+- Read the most recent transformed JSON file from `data/parsed/importation_bif`
+- Generate chart configuration for each year's data
+- Create datasets for each continent with consistent colors:
+  - AFRIQUE (Green)
+  - AMERIQUE (Blue)
+  - ASIE (Red)
+  - EUROPE (Yellow)
+  - OCEANIE (Purple)
+- Save the chart data to `website/data/monthly_imports_by_country.json`
+
+The output chart configuration will include:
+
+- Stacked bar charts showing monthly imports by continent
+- Consistent color scheme for better visualization
+- Monthly labels (Jan-Dec)
+- Year-specific titles and descriptions
+- Responsive chart settings
+- Legend positioned at the top
+
 ## Common Problems and Solutions
 
 1. **Error: "No module named 'something'"**
