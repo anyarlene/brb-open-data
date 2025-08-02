@@ -1,0 +1,12 @@
+# config/sources.yml
+# For each source, specify:
+#   name: a key for this source (used for local subdir or logging)
+#   url: either a direct link to the Excel file (ending in .xls[x])
+#        or a page URL where the Excel link must be discovered
+#   pattern: (optional) if url is a page, a regex to match the Excel filename in <a href=...>
+#   local_subdir: where under data/raw/ to save files
+sources:
+  importation_bif:
+    url: "https://www.brb.bi/node/477"
+    local_subdir: "data/raw/importation_bif"
+    pattern: "Importations.*\\.xlsx"
