@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BRB Open Data Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -23,6 +24,12 @@
       }
       .container {
         margin-bottom: 2rem;
+      }
+      .chart-container {
+        position: relative;
+        height: 400px;
+        width: 100%;
+        margin: 20px 0;
       }
     </style>
   </head>
@@ -57,9 +64,58 @@
       </ul>
 
       <h2>Data Visualizations</h2>
-      <p>
-        <em>Coming soon: Interactive visualizations of banking sector data</em>
-      </p>
+      <div class="chart-container">
+        <canvas id="monthlyImports"></canvas>
+      </div>
+
+      <script>
+        // Sample data - this will be replaced with real data from your backend
+        const data = {
+          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+          datasets: [
+            {
+              label: "Monthly Imports (Billions BIF)",
+              data: [250, 320, 280, 300, 270, 350],
+              backgroundColor: "rgba(52, 152, 219, 0.2)",
+              borderColor: "rgba(52, 152, 219, 1)",
+              borderWidth: 2,
+              tension: 0.4,
+            },
+          ],
+        };
+
+        // Create the chart
+        const ctx = document.getElementById("monthlyImports").getContext("2d");
+        new Chart(ctx, {
+          type: "line",
+          data: data,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              title: {
+                display: true,
+                text: "Monthly Import Trends",
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: "Value (Billions BIF)",
+                },
+              },
+              x: {
+                title: {
+                  display: true,
+                  text: "Month",
+                },
+              },
+            },
+          },
+        });
+      </script>
 
       <h2>Contributing</h2>
       <p>
