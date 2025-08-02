@@ -64,58 +64,104 @@
       </ul>
 
       <h2>Data Visualizations</h2>
-      <div class="chart-container">
-        <canvas id="monthlyImports"></canvas>
+      <div id="charts-grid">
+        <!-- Charts will be dynamically inserted here -->
       </div>
 
       <script>
-        // Sample data - this will be replaced with real data from your backend
-        const data = {
-          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-          datasets: [
-            {
-              label: "Monthly Imports (Billions BIF)",
-              data: [250, 320, 280, 300, 270, 350],
-              backgroundColor: "rgba(52, 152, 219, 0.2)",
-              borderColor: "rgba(52, 152, 219, 1)",
-              borderWidth: 2,
-              tension: 0.4,
-            },
-          ],
-        };
+        // Function to create a chart container
+        function createChartContainer(id) {
+          const container = document.createElement("div");
+          container.className = "chart-container";
+          const canvas = document.createElement("canvas");
+          canvas.id = id;
+          container.appendChild(canvas);
+          return container;
+        }
 
-        // Create the chart
-        const ctx = document.getElementById("monthlyImports").getContext("2d");
-        new Chart(ctx, {
-          type: "line",
-          data: data,
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              title: {
-                display: true,
-                text: "Monthly Import Trends",
-              },
-            },
-            scales: {
-              y: {
-                beginAtZero: true,
-                title: {
-                  display: true,
-                  text: "Value (Billions BIF)",
+        // Function to create a chart
+        async function createChart(jsonFile) {
+          try {
+            const response = await fetch(`data/${jsonFile}`);
+            const chartData = await response.json();
+
+            const chartId = jsonFile.replace(".json", "");
+            const container = createChartContainer(chartId);
+            document.getElementById("charts-grid").appendChild(container);
+
+            const ctx = document.getElementById(chartId).getContext("2d");
+            new Chart(ctx, {
+              type: chartData.type,
+              data: chartData.data,
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  title: {
+                    display: true,
+                    text: chartData.title,
+                  },
+                  tooltip: {
+                    enabled: true,
+                  },
                 },
+                scales:
+                  chartData.type !== "pie" && chartData.type !== "radar"
+                    ? {
+                        y: {
+                          beginAtZero: true,
+                        },
+                      }
+                    : {},
               },
-              x: {
-                title: {
-                  display: true,
-                  text: "Month",
-                },
-              },
-            },
-          },
-        });
+            });
+
+            // Add description
+            const descriptionEl = document.createElement("p");
+            descriptionEl.className = "chart-description";
+            descriptionEl.textContent = chartData.description;
+            container.appendChild(descriptionEl);
+          } catch (error) {
+            console.error(`Error loading chart from ${jsonFile}:`, error);
+          }
+        }
+
+        // List of JSON files to load
+        const chartFiles = [
+          "monthly_imports.json",
+          "sector_distribution.json",
+          "country_comparison.json",
+          "quarterly_growth.json",
+          "yearly_comparison.json",
+        ];
+
+        // Load all charts
+        chartFiles.forEach((file) => createChart(file));
       </script>
+
+      <style>
+        #charts-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+          gap: 2rem;
+          margin: 2rem 0;
+        }
+
+        .chart-container {
+          background: white;
+          padding: 1rem;
+          border-radius: 8px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          margin-bottom: 1rem;
+        }
+
+        .chart-description {
+          margin-top: 1rem;
+          font-size: 0.9rem;
+          color: #666;
+          text-align: center;
+        }
+      </style>
 
       <h2>Contributing</h2>
       <p>

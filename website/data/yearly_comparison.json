@@ -1,0 +1,24 @@
+{
+  "type": "scatter",
+  "title": "Import vs GDP Correlation",
+  "description": "Correlation between import values and GDP over years",
+  "data": {
+    "labels": ["2018", "2019", "2020", "2021", "2022"],
+    "datasets": [
+      {
+        "label": "Import-GDP Relationship",
+        "data": [
+          { "x": 2800, "y": 3200 },
+          { "x": 3000, "y": 3400 },
+          { "x": 2900, "y": 3300 },
+          { "x": 3200, "y": 3600 },
+          { "x": 3400, "y": 3800 }
+        ],
+        "backgroundColor": "rgba(241, 196, 15, 0.7)",
+        "borderColor": "rgba(241, 196, 15, 1)",
+        "borderWidth": 2,
+        "pointRadius": 6
+      }
+    ]
+  }
+}
