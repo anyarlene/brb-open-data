@@ -20,10 +20,10 @@ logger = logging.getLogger(__name__)
 def get_project_root() -> Path:
     """
     Return the project root directory (where pyproject.toml lives).
-    Assumes this file is at src/brb_open_data/etl/download_manager.py
+    Assumes this file is at analytics/src/etl/download_manager.py
     """
-    # __file__ → .../src/brb_open_data/etl/download_manager.py
-    return Path(__file__).resolve().parents[3]  # parents[0]=etl, [1]=brb_open_data, [2]=src, [3]=project root
+    # __file__ → .../analytics/src/etl/download_manager.py
+    return Path(__file__).resolve().parents[2]  # parents[0]=etl, [1]=src, [2]=analytics root
 
 def get_combined_ca_path() -> Path:
     """
@@ -192,7 +192,7 @@ def process_source(
 
 def run_all_downloads(config_path: Path = None) -> dict:
     if config_path is None:
-        project_root = Path(__file__).resolve().parents[2].parent
+        project_root = get_project_root()
         config_path = project_root / "config" / "sources.yml"
     else:
         project_root = config_path.parents[1]
