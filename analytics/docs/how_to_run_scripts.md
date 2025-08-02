@@ -40,7 +40,11 @@ This will:
 
 ## Step 2: Processing the Data
 
-After downloading the data, you need to process it into a more useful format. The parser will automatically find and process the most recent Excel file in the `data/raw/importation_bif` folder.
+After downloading the data, you need to process it into a more useful format. This happens in two steps:
+
+### Step 2.1: Parse Excel to CSV
+
+The parser will automatically find and process the most recent Excel file in the `data/raw/importation_bif` folder.
 
 Run this command:
 
@@ -64,6 +68,28 @@ The output CSV will contain:
 - All numeric values in decimal format
 - Empty or invalid values replaced with 0.0
 - Dates in YYYY-MM format
+
+### Step 2.2: Transform CSV to JSON
+
+After generating the CSV, you need to transform it into a JSON format grouped by continents. Run:
+
+```bash
+poetry run python src/parse/importation_bif/transform.py
+```
+
+This will:
+
+- Find the most recent CSV file in `data/parsed/importation_bif`
+- Group the data by continent, summing up values for all countries in each continent
+- Save the transformed data as a JSON file with today's date (e.g., `2025-08-03-monthly-transformed.json`)
+- Format: Hierarchical structure of year → month → continent → value
+
+The output JSON will contain:
+
+- Data grouped by continents (AFRIQUE, AMERIQUE, ASIE, EUROPE, OCEANIE)
+- Monthly totals for each continent
+- All values aggregated from country-level data
+- Dates organized by year and month names
 
 ## Common Problems and Solutions
 

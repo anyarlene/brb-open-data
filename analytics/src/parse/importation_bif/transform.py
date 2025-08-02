@@ -46,10 +46,10 @@ def transform_csv_to_json():
         if month_name not in result[year]:
             result[year][month_name] = {}
 
-        # Add country values for this month
-        for _, row in df.iterrows():
-            if not pd.isna(row[date_col]):  # Only add non-null values
-                result[year][month_name][row['country']] = row[date_col]
+        # Group by continent and sum values for this month
+        continent_sums = df.groupby('continent')[date_col].sum().dropna()
+        for continent, value in continent_sums.items():
+            result[year][month_name][continent] = value
 
     # Generate output filename with today's date
     today = datetime.now().strftime("%Y-%m-%d")
