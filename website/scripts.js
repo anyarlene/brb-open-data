@@ -1,3 +1,5 @@
+let currentChart = null;
+
 // Function to create a chart container
 function createChartContainer(id) {
   const container = document.createElement("div");
@@ -8,106 +10,83 @@ function createChartContainer(id) {
   return container;
 }
 
-// Function to create a chart
-async function createChart(jsonFile) {
+// Function to update the year selector
+function updateYearSelector(years, onYearChange) {
+  const yearSelect = document.getElementById("yearSelect");
+  yearSelect.innerHTML = ""; // Clear existing options
+
+  years.forEach((year) => {
+    const option = document.createElement("option");
+    option.value = year;
+    option.textContent = year;
+    yearSelect.appendChild(option);
+  });
+
+  // Set initial year to the most recent one
+  yearSelect.value = years[years.length - 1];
+
+  // Add change event listener
+  yearSelect.addEventListener("change", (e) => {
+    onYearChange(e.target.value);
+  });
+}
+
+// Function to create or update the chart
+function updateChart(container, yearData) {
+  // Destroy existing chart if it exists
+  if (currentChart) {
+    currentChart.destroy();
+  }
+
+  const ctx = container.querySelector("canvas").getContext("2d");
+  currentChart = new Chart(ctx, {
+    type: yearData.type,
+    data: yearData.data,
+    options: {
+      ...yearData.options,
+      responsive: true,
+      maintainAspectRatio: false,
+    },
+  });
+
+  // Update description
+  let descriptionEl = container.querySelector(".chart-description");
+  if (!descriptionEl) {
+    descriptionEl = document.createElement("p");
+    descriptionEl.className = "chart-description";
+    container.appendChild(descriptionEl);
+  }
+  descriptionEl.textContent = yearData.description;
+}
+
+// Function to initialize the visualization
+async function initializeVisualization() {
   try {
-    const response = await fetch(`data/${jsonFile}`);
+    // Fetch the chart data
+    const response = await fetch("data/monthly_imports_by_continent.json");
     const chartData = await response.json();
 
-    // Handle both single chart and multi-chart (yearly) data
-    if (
-      typeof chartData === "object" &&
-      chartData !== null &&
-      Object.keys(chartData).length > 0
-    ) {
-      // If the data has years as keys, create a chart for each year
-      if (Object.keys(chartData)[0].match(/^\d{4}$/)) {
-        // Sort years in ascending order
-        const years = Object.keys(chartData).sort();
+    // Get sorted years
+    const years = Object.keys(chartData).sort();
 
-        for (const year of years) {
-          const yearData = chartData[year];
-          const chartId = `${jsonFile.replace(".json", "")}-${year}`;
-          const container = createChartContainer(chartId);
-          document.getElementById("charts-grid").appendChild(container);
+    // Create container if it doesn't exist
+    const chartsGrid = document.getElementById("charts-grid");
+    chartsGrid.innerHTML = ""; // Clear existing content
 
-          const ctx = document.getElementById(chartId).getContext("2d");
-          new Chart(ctx, {
-            type: yearData.type,
-            data: yearData.data,
-            options: {
-              ...yearData.options,
-              responsive: true,
-              maintainAspectRatio: false,
-            },
-          });
+    const container = createChartContainer("imports-chart");
+    chartsGrid.appendChild(container);
 
-          // Add description
-          const descriptionEl = document.createElement("p");
-          descriptionEl.className = "chart-description";
-          descriptionEl.textContent = yearData.description;
-          container.appendChild(descriptionEl);
-        }
-      } else {
-        // Handle single chart data (existing logic)
-        const chartId = jsonFile.replace(".json", "");
-        const container = createChartContainer(chartId);
-        document.getElementById("charts-grid").appendChild(container);
+    // Initialize year selector
+    updateYearSelector(years, (selectedYear) => {
+      updateChart(container, chartData[selectedYear]);
+    });
 
-        const ctx = document.getElementById(chartId).getContext("2d");
-        new Chart(ctx, {
-          type: chartData.type,
-          data: chartData.data,
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              title: {
-                display: true,
-                text: chartData.title,
-              },
-              tooltip: {
-                enabled: true,
-              },
-            },
-            scales:
-              chartData.type !== "pie" && chartData.type !== "radar"
-                ? {
-                    y: {
-                      beginAtZero: true,
-                    },
-                  }
-                : {},
-          },
-        });
-
-        // Add description
-        const descriptionEl = document.createElement("p");
-        descriptionEl.className = "chart-description";
-        descriptionEl.textContent = chartData.description;
-        container.appendChild(descriptionEl);
-      }
-    }
+    // Show initial chart with the most recent year
+    updateChart(container, chartData[years[years.length - 1]]);
   } catch (error) {
-    console.error(`Error loading chart from ${jsonFile}:`, error);
+    console.error("Error initializing visualization:", error);
   }
 }
 
-// Function to fetch and load all JSON files from the data directory
-async function loadAllCharts() {
-  try {
-    // Fetch the list of chart files from chart_files.json
-    const response = await fetch("data/chart_files.json");
-    const { charts } = await response.json();
-
-    // Create charts for each JSON file in the list
-    for (const file of charts) {
-      await createChart(file);
-    }
-  } catch (error) {
-    console.error("Error loading charts:", error);
-  }
-}
-
-// Load all charts when the document is ready
-document.addEventListener("DOMContentLoaded", loadAllCharts);
+// Initialize when the document is ready
+document.addEventListener("DOMContentLoaded", initializeVisualization);

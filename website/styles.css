@@ -46,3 +46,32 @@ a {
   color: #666;
   text-align: center;
 }
+
+.chart-controls {
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.chart-controls label {
+  margin-right: 0.5rem;
+  font-weight: 500;
+}
+
+.chart-controls select {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: white;
+  cursor: pointer;
+}
+
+.chart-controls select:hover {
+  border-color: #3498db;
+}
+
+.chart-controls select:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
