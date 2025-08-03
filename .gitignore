@@ -5,11 +5,4 @@ elt_scripts/
 data/*
 .DS_Store
 
-# Jekyll specific
-website/_site/
-website/.sass-cache/
-website/.jekyll-cache/
-website/.jekyll-metadata
-website/Gemfile.lock
-website/.bundle/
-website/vendor/
+analytics/data/*
