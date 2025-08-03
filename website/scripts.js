@@ -1,33 +1,50 @@
 let currentChart = null;
-
-// Function to create a chart container
-function createChartContainer(id) {
-  const container = document.createElement("div");
-  container.className = "chart-container";
-  const canvas = document.createElement("canvas");
-  canvas.id = id;
-  container.appendChild(canvas);
-  return container;
-}
+let chartData = null;
 
 // Function to create or update the chart
-function updateChart(container, chartConfig) {
+function updateChart(year) {
   // Destroy existing chart if it exists
   if (currentChart) {
     currentChart.destroy();
   }
 
-  const ctx = container.querySelector("canvas").getContext("2d");
+  const ctx = document.getElementById("importChart").getContext("2d");
+  const yearData = chartData.data[year];
+
+  const config = {
+    type: chartData.type,
+    data: yearData,
+    options: chartData.options,
+  };
 
   // Parse the tooltip callback function from string if it exists
-  if (chartConfig.options?.plugins?.tooltip?.callbacks?.label) {
-    const labelFnStr = chartConfig.options.plugins.tooltip.callbacks.label;
-    chartConfig.options.plugins.tooltip.callbacks.label = new Function(
+  if (config.options?.plugins?.tooltip?.callbacks?.label) {
+    const labelFnStr = config.options.plugins.tooltip.callbacks.label;
+    config.options.plugins.tooltip.callbacks.label = new Function(
       "return " + labelFnStr
     )();
   }
 
-  currentChart = new Chart(ctx, chartConfig);
+  // Update the chart title with the selected year
+  config.options.plugins.title.text = `${chartData.title} - ${year}`;
+
+  currentChart = new Chart(ctx, config);
+}
+
+// Function to populate year select dropdown
+function populateYearSelect(years) {
+  const yearSelect = document.getElementById("yearSelect");
+  yearSelect.innerHTML = ""; // Clear existing options
+
+  years.forEach((year) => {
+    const option = document.createElement("option");
+    option.value = year;
+    option.textContent = year;
+    yearSelect.appendChild(option);
+  });
+
+  // Select the most recent year by default
+  yearSelect.value = years[years.length - 1];
 }
 
 // Function to initialize the visualization
@@ -35,17 +52,17 @@ async function initializeVisualization() {
   try {
     // Fetch the chart data
     const response = await fetch("data/monthly_imports_by_continent.json");
-    const chartData = await response.json();
+    chartData = await response.json();
 
-    // Create container if it doesn't exist
-    const chartsGrid = document.getElementById("charts-grid");
-    chartsGrid.innerHTML = ""; // Clear existing content
+    // Populate year select dropdown
+    populateYearSelect(chartData.years);
 
-    const container = createChartContainer("imports-chart");
-    chartsGrid.appendChild(container);
+    // Add event listener for year selection
+    const yearSelect = document.getElementById("yearSelect");
+    yearSelect.addEventListener("change", (e) => updateChart(e.target.value));
 
-    // Use the timeline view directly
-    updateChart(container, chartData.timeline);
+    // Initialize chart with the most recent year
+    updateChart(chartData.years[chartData.years.length - 1]);
   } catch (error) {
     console.error("Error initializing visualization:", error);
   }

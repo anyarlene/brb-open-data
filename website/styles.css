@@ -57,10 +57,11 @@ a {
 .chart-container {
   position: relative;
   height: 500px;
-  width: 2000px; /* Fixed width for horizontal scrolling */
+  width: 100%;
   background: white;
   border-radius: 8px;
   margin-bottom: 1rem;
+  padding: 1rem;
 }
 
 #charts-grid {

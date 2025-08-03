@@ -40,12 +40,16 @@
       <h2>Data Visualizations</h2>
       <div class="visualization-container">
         <div class="chart-header">
-          <h3>Imports by Continent Over Time</h3>
-        </div>
-        <div class="chart-scroll-container">
-          <div id="charts-grid">
-            <!-- Scrollable chart will be inserted here -->
+          <h3>Monthly Imports by Continent</h3>
+          <div class="chart-controls">
+            <label for="yearSelect">Select Year:</label>
+            <select id="yearSelect">
+              <!-- Years will be populated by JavaScript -->
+            </select>
           </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="importChart"></canvas>
         </div>
       </div>
 
