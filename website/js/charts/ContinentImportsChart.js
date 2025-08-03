@@ -1,4 +1,5 @@
 import { BaseChart } from "./BaseChart.js";
+import { getChartConfig } from "./chartConfig.js";
 
 export class ContinentImportsChart extends BaseChart {
   constructor(containerId) {
@@ -19,9 +20,22 @@ export class ContinentImportsChart extends BaseChart {
 
       // Initialize chart with the initial year
       this.updateChart(initialYear);
+
+      // Add window resize handler
+      this.handleResize();
     } catch (error) {
       console.error("Error initializing visualization:", error);
     }
+  }
+
+  handleResize() {
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        this.updateChart(this.data.years[this.yearSlider.value]);
+      }, 250);
+    });
   }
 
   setupYearSlider() {
@@ -53,18 +67,16 @@ export class ContinentImportsChart extends BaseChart {
     const ctx = document.getElementById(this.containerId).getContext("2d");
     const yearData = this.data.data[year];
 
-    const config = {
-      type: this.data.type,
-      data: yearData,
-      options: this.data.options,
-    };
+    // Get responsive configuration
+    const config = getChartConfig(
+      this.data.type,
+      yearData,
+      this.data.options,
+      this.data.title,
+      year
+    );
 
-    // Parse tooltip callback if exists
-    config.options = this.parseTooltipCallback(config.options);
-
-    // Update the chart title with the selected year
-    config.options.plugins.title.text = `${this.data.title} - ${year}`;
-
+    // Create new chart instance
     this.chart = new Chart(ctx, config);
   }
 }

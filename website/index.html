@@ -3,67 +3,154 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BRB Open Data Visualization</title>
+    <title>BRB Open Data Portal | Bank of the Republic of Burundi</title>
+    <meta
+      name="description"
+      content="Official data visualization portal for the Bank of the Republic of Burundi (BRB). Access and analyze banking sector statistics, financial indicators, and economic data."
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="container">
-      <h1>BRB Open Data Visualization</h1>
-      <p>
-        Welcome to the BRB (Bank of the Republic of Burundi) Open Data
-        Visualization project. This project aims to provide transparent access
-        to and visualization of banking data from Burundi.
-      </p>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container nav-container">
+        <a href="/" class="logo">BRB Data Portal</a>
+        <ul class="nav-links">
+          <li><a href="#visualizations">Visualizations</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#data">Data</a></li>
+          <li><a href="#contribute">Contribute</a></li>
+        </ul>
+      </div>
+    </nav>
 
-      <h2>Available Data</h2>
-      <ul>
-        <li>Importation data analysis</li>
-        <li>Banking sector statistics</li>
-        <li>Financial indicators</li>
-      </ul>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container hero-content">
+        <h1>Bank of the Republic of Burundi Open Data</h1>
+        <p>
+          Access, analyze, and visualize comprehensive banking and financial
+          data from Burundi's central bank through our interactive platform.
+        </p>
+      </div>
+    </section>
 
-      <h2>Project Structure</h2>
-      <ul>
-        <li>
-          <strong>ETL Pipeline</strong>: Data extraction and transformation
-          processes
-        </li>
-        <li>
-          <strong>Analytics</strong>: Data analysis and statistical computations
-        </li>
-        <li>
-          <strong>Parsing</strong>: Custom parsers for various data formats
-        </li>
-      </ul>
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="container">
+        <!-- About Section -->
+        <section id="about" class="section fade-in">
+          <h2>About This Platform</h2>
+          <p>
+            The BRB Open Data Portal provides transparent access to Burundi's
+            banking and financial data. Our platform transforms complex datasets
+            into clear, interactive visualizations to support informed
+            decision-making.
+          </p>
 
-      <h2>Data Visualizations</h2>
-      <div class="visualization-container">
-        <div class="chart-header">
-          <h3>Monthly Imports by Continent</h3>
-          <h2 class="year-display">
-            <span id="selectedYear"></span>
-          </h2>
+          <div class="features-grid">
+            <div class="feature-card">
+              <h3>Data Transparency</h3>
+              <p>
+                Direct access to official banking sector statistics and
+                financial indicators
+              </p>
+            </div>
+            <div class="feature-card">
+              <h3>Interactive Analysis</h3>
+              <p>
+                Dynamic visualizations for deeper understanding of economic
+                trends
+              </p>
+            </div>
+            <div class="feature-card">
+              <h3>Regular Updates</h3>
+              <p>Latest data from the Bank of the Republic of Burundi</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Data Visualizations -->
+        <section id="visualizations" class="section fade-in">
+          <h2>Data Visualizations</h2>
+          <div class="visualization-container">
+            <div class="chart-header">
+              <h3>Monthly Imports by Continent</h3>
+              <h2 class="year-display">
+                <span id="selectedYear"></span>
+              </h2>
+            </div>
+
+            <div class="chart-container">
+              <canvas id="importChart"></canvas>
+            </div>
+
+            <div class="slider-section">
+              <input type="range" id="yearSlider" class="year-slider" />
+            </div>
+          </div>
+        </section>
+
+        <!-- Available Data -->
+        <section id="data" class="section fade-in">
+          <h2>Available Datasets</h2>
+          <div class="features-grid">
+            <div class="feature-card">
+              <h3>Import/Export Data</h3>
+              <p>Comprehensive trade statistics and analysis</p>
+            </div>
+            <div class="feature-card">
+              <h3>Banking Statistics</h3>
+              <p>Key performance indicators of the banking sector</p>
+            </div>
+            <div class="feature-card">
+              <h3>Financial Indicators</h3>
+              <p>Economic and financial market metrics</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Contribute Section -->
+        <section id="contribute" class="section fade-in">
+          <h2>Contribute to the Project</h2>
+          <p>
+            This is an open-source project and we welcome contributions from the
+            community. Whether you're a data scientist, developer, or domain
+            expert, your input can help improve this platform.
+          </p>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container footer-content">
+        <div class="footer-disclaimer">
+          <p class="disclaimer-text">
+            This is an independent open data visualization project and is not
+            affiliated with, endorsed by, or connected to the Bank of the
+            Republic of Burundi (BRB). All data is sourced from publicly
+            available information.
+          </p>
         </div>
-
-        <div class="chart-container">
-          <canvas id="importChart"></canvas>
-        </div>
-
-        <div class="slider-section">
-          <input type="range" id="yearSlider" class="year-slider" />
+        <div class="footer-links">
+          <a
+            href="https://github.com/anyarlene/brb-open-data"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="github-link"
+          >
+            View on GitHub
+          </a>
         </div>
       </div>
+    </footer>
 
-      <h2>Contributing</h2>
-      <p>
-        We welcome contributions! Please see our contribution guidelines for
-        more information.
-      </p>
-
-      <hr />
-      <p><em>This is an open data project maintained by the community.</em></p>
-    </div>
     <script src="js/main.js" type="module"></script>
   </body>
 </html>
