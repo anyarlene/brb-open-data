@@ -31,20 +31,39 @@ function updateChart(year) {
   currentChart = new Chart(ctx, config);
 }
 
-// Function to populate year select dropdown
-function populateYearSelect(years) {
-  const yearSelect = document.getElementById("yearSelect");
-  yearSelect.innerHTML = ""; // Clear existing options
+// Function to set up the year slider
+function setupYearSlider(years) {
+  const yearSlider = document.getElementById("yearSlider");
+  const selectedYearSpan = document.getElementById("selectedYear");
+  const yearLabels = document.getElementById("yearLabels");
 
-  years.forEach((year) => {
-    const option = document.createElement("option");
-    option.value = year;
-    option.textContent = year;
-    yearSelect.appendChild(option);
+  // Configure slider
+  yearSlider.min = 0;
+  yearSlider.max = years.length - 1;
+  yearSlider.value = years.length - 1; // Start with most recent year
+  yearSlider.step = 1;
+
+  // Update selected year display
+  selectedYearSpan.textContent = years[yearSlider.value];
+
+  // Create year labels
+  yearLabels.innerHTML = "";
+  years.forEach((year, index) => {
+    const label = document.createElement("span");
+    label.className = "year-label";
+    label.textContent = year;
+    label.style.left = `${(index / (years.length - 1)) * 100}%`;
+    yearLabels.appendChild(label);
   });
 
-  // Select the most recent year by default
-  yearSelect.value = years[years.length - 1];
+  // Add event listeners
+  yearSlider.addEventListener("input", (e) => {
+    const selectedYear = years[e.target.value];
+    selectedYearSpan.textContent = selectedYear;
+    updateChart(selectedYear);
+  });
+
+  return years[yearSlider.value]; // Return initial year
 }
 
 // Function to initialize the visualization
@@ -54,15 +73,11 @@ async function initializeVisualization() {
     const response = await fetch("data/monthly_imports_by_continent.json");
     chartData = await response.json();
 
-    // Populate year select dropdown
-    populateYearSelect(chartData.years);
+    // Set up year slider and get initial year
+    const initialYear = setupYearSlider(chartData.years);
 
-    // Add event listener for year selection
-    const yearSelect = document.getElementById("yearSelect");
-    yearSelect.addEventListener("change", (e) => updateChart(e.target.value));
-
-    // Initialize chart with the most recent year
-    updateChart(chartData.years[chartData.years.length - 1]);
+    // Initialize chart with the initial year
+    updateChart(initialYear);
   } catch (error) {
     console.error("Error initializing visualization:", error);
   }
