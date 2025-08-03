@@ -21,16 +21,23 @@ a {
   margin-bottom: 2rem;
 }
 
+.chart-scroll-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin: 20px 0;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
 .chart-container {
   position: relative;
   height: 500px;
-  width: 100%;
-  margin: 20px 0;
+  width: 2000px; /* Fixed width for horizontal scrolling */
   background: white;
-  padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1rem;
-  overflow: hidden;
 }
 
 #charts-grid {
