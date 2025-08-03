@@ -30,15 +30,74 @@ def transform_data():
     }
 
     # Transform data for each year
-    chart_data = {}
-    for year, year_data in source_data.items():
-        # Get all continents (they should be consistent across months)
-        continents = set()
+    chart_data = {
+        "yearly": {},  # For year-by-year view
+        "timeline": {  # For timeline view
+            "type": "bar",
+            "title": "Imports by Continent Over Time",
+            "description": "Yearly import values grouped by continent",
+            "data": {
+                "labels": sorted(source_data.keys()),  # Years as labels
+                "datasets": []
+            },
+            "options": {
+                "responsive": True,
+                "plugins": {
+                    "title": {
+                        "display": True,
+                        "text": "Total Imports by Continent Over Time"
+                    },
+                    "legend": {
+                        "position": "top"
+                    },
+                    "tooltip": {
+                        "callbacks": {
+                            "label": "function(context) { const value = context.raw.toFixed(2); return `${context.dataset.label}: ${value}`; }"
+                        }
+                    }
+                },
+                "scales": {
+                    "x": {
+                        "stacked": True,
+                        "title": {
+                            "display": True,
+                            "text": "Year"
+                        }
+                    },
+                    "y": {
+                        "stacked": True,
+                        "title": {
+                            "display": True,
+                            "text": "Total Imports"
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    # First, get all continents across all years
+    continents = set()
+    for year_data in source_data.values():
         for month_data in year_data.values():
             continents.update(month_data.keys())
-        continents = sorted(list(continents))
+    continents = sorted(list(continents))
 
-        # Prepare datasets
+    # Initialize timeline datasets
+    timeline_datasets = {
+        continent: {
+            "label": continent,
+            "data": [],
+            "backgroundColor": continent_colors.get(continent, generate_color())
+        }
+        for continent in continents
+    }
+
+    # Process data for both views
+    for year in sorted(source_data.keys()):
+        year_data = source_data[year]
+
+        # For yearly view
         datasets = []
         for continent in continents:
             dataset = {
@@ -48,8 +107,12 @@ def transform_data():
             }
             datasets.append(dataset)
 
-        # Create chart configuration
-        chart_data[year] = {
+            # Calculate yearly total for timeline view
+            yearly_total = sum(dataset["data"])
+            timeline_datasets[continent]["data"].append(yearly_total)
+
+        # Add to yearly view
+        chart_data["yearly"][year] = {
             "type": "bar",
             "title": "Imports by Continent",
             "description": "Monthly import values grouped by continent",
@@ -75,6 +138,9 @@ def transform_data():
                 }
             }
         }
+
+    # Add timeline datasets to timeline view
+    chart_data["timeline"]["data"]["datasets"] = list(timeline_datasets.values())
 
     # Save the output
     project_root = os.path.dirname(analytics_dir)
