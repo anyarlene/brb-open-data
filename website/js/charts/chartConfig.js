@@ -1,4 +1,13 @@
 export const getChartConfig = (type, data, options, title, year) => {
+  // Professional color palette for charts
+  const chartColors = [
+    "#2a6f86", // Primary blue
+    "#f0b429", // Gold
+    "#e85d04", // Orange
+    "#2b9348", // Green
+    "#6930c3", // Purple
+  ];
+
   const defaultOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -9,11 +18,13 @@ export const getChartConfig = (type, data, options, title, year) => {
         font: {
           size: 16,
           weight: "bold",
+          family: "'Inter', sans-serif",
         },
         padding: {
           top: 10,
           bottom: 20,
         },
+        color: "#1e4d5c", // primary-color
       },
       legend: {
         position: "top",
@@ -23,36 +34,73 @@ export const getChartConfig = (type, data, options, title, year) => {
           padding: 15,
           font: {
             size: 11,
+            family: "'Inter', sans-serif",
           },
+          color: "#1a2b32", // text-color
         },
       },
     },
     scales: {
       x: {
+        grid: {
+          color: "#e1e8ed", // gray-200
+          drawBorder: false,
+        },
         ticks: {
           maxRotation: 45,
           minRotation: 45,
           font: {
             size: 10,
+            family: "'Inter', sans-serif",
           },
+          color: "#4a6271", // text-light
         },
       },
       y: {
         beginAtZero: true,
+        grid: {
+          color: "#e1e8ed", // gray-200
+          drawBorder: false,
+        },
         ticks: {
           font: {
             size: 10,
+            family: "'Inter', sans-serif",
           },
+          color: "#4a6271", // text-light
         },
       },
     },
     layout: {
       padding: {
-        left: 10,
-        right: 10,
+        left: 15,
+        right: 15,
+        top: 5,
+        bottom: 5,
+      },
+    },
+    elements: {
+      line: {
+        tension: 0.3, // Smooth lines
+      },
+      point: {
+        radius: 4,
+        hitRadius: 8,
+        hoverRadius: 6,
       },
     },
   };
+
+  // Override the dataset colors with our professional palette
+  if (data.datasets) {
+    data.datasets = data.datasets.map((dataset, index) => ({
+      ...dataset,
+      backgroundColor: chartColors[index % chartColors.length],
+      borderColor: chartColors[index % chartColors.length],
+      borderWidth: 2,
+      fill: false,
+    }));
+  }
 
   return {
     type,
