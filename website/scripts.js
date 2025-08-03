@@ -35,7 +35,6 @@ function updateChart(year) {
 function setupYearSlider(years) {
   const yearSlider = document.getElementById("yearSlider");
   const selectedYearSpan = document.getElementById("selectedYear");
-  const yearLabels = document.getElementById("yearLabels");
 
   // Configure slider
   yearSlider.min = 0;
@@ -45,16 +44,6 @@ function setupYearSlider(years) {
 
   // Update selected year display
   selectedYearSpan.textContent = years[yearSlider.value];
-
-  // Create year labels
-  yearLabels.innerHTML = "";
-  years.forEach((year, index) => {
-    const label = document.createElement("span");
-    label.className = "year-label";
-    label.textContent = year;
-    label.style.left = `${(index / (years.length - 1)) * 100}%`;
-    yearLabels.appendChild(label);
-  });
 
   // Add event listeners
   yearSlider.addEventListener("input", (e) => {
