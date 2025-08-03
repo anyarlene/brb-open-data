@@ -78,7 +78,7 @@ def transform_data():
 
     # Save the output
     project_root = os.path.dirname(analytics_dir)
-    output_path = os.path.join(project_root, "website/data/monthly_imports_by_country.json")
+    output_path = os.path.join(project_root, "website/data/monthly_imports_by_continent.json")
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     with open(output_path, "w") as f:
         json.dump(chart_data, f, indent=2)
