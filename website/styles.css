@@ -336,39 +336,46 @@ p {
 .footer {
   background: var(--background-dark);
   color: var(--white);
-  padding: 4rem 0;
+  padding: 3rem 0;
   margin-top: var(--section-spacing);
 }
 
 .footer-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2rem;
 }
 
-.footer h4 {
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
-  color: var(--gray-200);
+.footer-disclaimer {
+  max-width: 800px;
 }
 
-.footer ul {
-  list-style: none;
-}
-
-.footer li {
-  margin-bottom: 0.75rem;
-}
-
-.footer a {
-  color: var(--gray-400);
-  text-decoration: none;
-  transition: color 0.2s ease;
+.disclaimer-text {
+  color: var(--gray-300);
   font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
 }
 
-.footer a:hover {
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   color: var(--white);
+  text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.github-link:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
 }
 
 /* Responsive Design */
