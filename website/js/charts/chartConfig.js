@@ -39,6 +39,16 @@ export const getChartConfig = (type, data, options, title, year) => {
           color: "#1a2b32", // text-color
         },
       },
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            const value = context.raw.toLocaleString("en-US", {
+              maximumFractionDigits: 0,
+            });
+            return `${context.dataset.label}: ${value} M BIF`;
+          },
+        },
+      },
     },
     scales: {
       x: {
@@ -68,6 +78,23 @@ export const getChartConfig = (type, data, options, title, year) => {
             family: "'Inter', sans-serif",
           },
           color: "#4a6271", // text-light
+          callback: function (value) {
+            return (
+              value.toLocaleString("en-US", {
+                maximumFractionDigits: 0,
+              }) + " M"
+            );
+          },
+        },
+        title: {
+          display: true,
+          text: "Million BIF",
+          color: "#1a2b32",
+          font: {
+            size: 12,
+            family: "'Inter', sans-serif",
+            weight: "500",
+          },
         },
       },
     },

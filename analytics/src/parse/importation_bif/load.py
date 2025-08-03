@@ -39,8 +39,8 @@ def transform_data():
     # Transform data for visualization
     chart_data = {
         "type": "bar",
-        "title": "Imports by Continent",
-        "description": "Monthly import values grouped by continent",
+        "title": "Monthly Imports by Continent (Million BIF)",
+        "description": "Monthly import values in Million Burundian Francs (BIF) grouped by continent",
         "years": sorted(source_data.keys()),  # Available years for filtering
         "data": {},  # Will contain data for each year
         "options": {
@@ -48,14 +48,14 @@ def transform_data():
             "plugins": {
                 "title": {
                     "display": True,
-                    "text": "Monthly Imports by Continent"
+                    "text": "Monthly Imports by Continent (Million BIF)"
                 },
                 "legend": {
                     "position": "top"
                 },
                 "tooltip": {
                     "callbacks": {
-                        "label": "function(context) { const value = context.raw.toFixed(2); return `${context.dataset.label}: ${value}`; }"
+                        "label": "function(context) { const value = context.raw.toLocaleString('en-US', { maximumFractionDigits: 0 }); return `${context.dataset.label}: ${value} M BIF`; }"
                     }
                 }
             },
@@ -71,7 +71,7 @@ def transform_data():
                     "stacked": True,
                     "title": {
                         "display": True,
-                        "text": "Import Value"
+                        "text": "Import Value (Million BIF)"
                     }
                 }
             }
