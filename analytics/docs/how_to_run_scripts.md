@@ -11,6 +11,7 @@ You need to have these things on your computer:
 
 - Python (version 3.12 or newer)
 - Poetry (a tool that helps manage Python packages)
+- Git Bash (for Windows users)
 
 If you don't have Poetry, you can install it by running this command:
 
@@ -35,14 +36,16 @@ poetry run download-all
 This will:
 
 - Connect to the BRB website
-- Find the newest data file
-- Download it to your computer in the `data/raw/importation_countries` folder
+- Find the newest data files
+- Download them to your computer in the respective raw data folders:
+  - `data/raw/importation_countries` - Country-wise import data
+  - `data/raw/importation_categories` - Category-wise import data
 
 ## Step 2: Processing the Data
 
-After downloading the data, you need to process it into a more useful format. This happens in two steps:
+After downloading the data, you need to process it into a more useful format. This happens in multiple steps:
 
-### Step 2.1: Parse Excel to CSV
+### Step 2.1: Parse Country Import Data (Excel to CSV)
 
 The parser will automatically find and process the most recent Excel file in the `data/raw/importation_countries` folder.
 
@@ -109,7 +112,7 @@ This will:
   - ASIE (Red)
   - EUROPE (Yellow)
   - OCEANIE (Purple)
-- Save the chart data to `website/data/monthly_imports_by_country.json`
+- Save the chart data to `website/data/monthly_imports_by_continent.json`
 
 The output chart configuration will include:
 
@@ -119,6 +122,23 @@ The output chart configuration will include:
 - Year-specific titles and descriptions
 - Responsive chart settings
 - Legend positioned at the top
+
+## Project Structure
+
+The project is organized as follows:
+
+```
+analytics/
+├── config/           # Configuration files
+├── data/            # Data files
+│   ├── raw/         # Raw data downloaded from BRB
+│   └── parsed/      # Processed data files
+├── docs/            # Documentation
+└── src/             # Source code
+    ├── etl/         # Data download scripts
+    └── parse/       # Data parsing scripts
+        └── importation_bif/  # Country import data processing
+```
 
 ## Common Problems and Solutions
 
@@ -138,7 +158,8 @@ The output chart configuration will include:
 
 3. **Can't find the input file**
    - Make sure you're using the correct path to the Excel file
-   - Look in the `data/raw/importation_countries` folder for the latest downloaded file
+   - Look in the appropriate raw data folder for the latest downloaded file
+   - Check that the download script ran successfully
 
 ## Need Help?
 
@@ -147,3 +168,4 @@ If you have any problems:
 1. Make sure you're using `poetry run` before your commands
 2. Check that all files exist in the correct folders
 3. Make sure you installed all packages with `poetry install`
+4. For Windows users, ensure you're using Git Bash for consistent command execution
