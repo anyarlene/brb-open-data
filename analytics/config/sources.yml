@@ -6,7 +6,12 @@
 #   pattern: (optional) if url is a page, a regex to match the Excel filename in <a href=...>
 #   local_subdir: where under data/raw/ to save files
 sources:
-  importation_bif:
+  importation_countries:
     url: "https://www.brb.bi/node/477"
-    local_subdir: "data/raw/importation_bif"
-    pattern: "Importations.*\\.xlsx"
+    local_subdir: "data/raw/importation_countries"
+    pattern: "IV\\.5\\.Importations.*\\.(xlsx|xls)"
+
+  importation_categories:
+    url: "https://www.brb.bi/node/343"
+    local_subdir: "data/raw/importation_categories"
+    pattern: "IV\\.2\\.Importations_par_rubrique.*\\.(xlsx|xls)"

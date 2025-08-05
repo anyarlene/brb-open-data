@@ -204,11 +204,18 @@ def run_all_downloads(config_path: Path = None) -> dict:
     for name, entry in sources.items():
         try:
             saved = process_source(name, entry, project_root, session)
-            results[name] = {"status": "ok", "path": str(saved)}
+            filename = Path(saved).name
+            results[name] = {
+                "status": "successful",
+                "path": f"File {filename} successfully saved"
+            }
             logger.info(f"[{name}] Download succeeded: {saved}")
         except Exception as e:
             logger.error(f"[{name}] Error: {e}")
-            results[name] = {"status": "error", "error": str(e)}
+            results[name] = {
+                "status": "failed",
+                "path": f"Download failed: {str(e)}"
+            }
     return results
 
 def main():
@@ -216,9 +223,14 @@ def main():
     parser = argparse.ArgumentParser(description="Download configured Excel sources")
     parser.add_argument("--config", "-c", help="Path to config YAML (default config/sources.yml)", default=None)
     parser.add_argument("--output-json", "-o", help="Print JSON results", action="store_true")
+    parser.add_argument("--verbose", "-v", help="Show detailed progress messages", action="store_true")
     args = parser.parse_args()
 
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+    # Only show WARNING and above unless --verbose flag is used
+    if args.verbose:
+        logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+    else:
+        logging.basicConfig(level=logging.WARNING, format="%(asctime)s [%(levelname)s] %(message)s")
 
     config_path = Path(args.config) if args.config else None
     results = run_all_downloads(config_path)
@@ -227,9 +239,9 @@ def main():
     else:
         for name, res in results.items():
             if res["status"] == "ok":
-                print(f"{name}: saved to {res['path']}")
+                print(f"✓ {name}: Successfully downloaded")
             else:
-                print(f"{name}: ERROR: {res['error']}")
+                print(f"✗ {name}: Download failed - {res['error']}")
 
 if __name__ == "__main__":
     main()

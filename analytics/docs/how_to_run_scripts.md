@@ -1,149 +1,113 @@
 # How to Run the BRB Data Scripts
 
-This guide will show you how to download and process data from the Burundi Central Bank (BRB) website. We'll use two main scripts:
-
-1. A script that downloads the data
-2. A script that processes the data into a useful format
+This guide explains how to process data from the Burundi Central Bank (BRB) website using our ETL (Extract, Transform, Load) pipeline.
 
 ## Before You Start
 
-You need to have these things on your computer:
+Required tools:
 
 - Python (version 3.12 or newer)
-- Poetry (a tool that helps manage Python packages)
+- Poetry (package manager)
+- Git Bash (for Windows users)
 
-If you don't have Poetry, you can install it by running this command:
-
+Install Poetry:
 ```bash
 curl -sSL https://install.python-poetry.org | python3 -
 ```
 
-After installing Poetry, you need to install all the project's required packages. Do this by running:
-
+Install project dependencies:
 ```bash
 poetry install
 ```
 
-## Step 1: Downloading the Data
+## ETL Pipeline
 
-To download the latest data from the BRB website, run:
+Our data processing follows a standard ETL (Extract, Transform, Load) pipeline:
 
+### 1. Extract (Download)
+
+Download the latest data from BRB:
 ```bash
 poetry run download-all
 ```
 
-This will:
+This downloads all required files into their respective directories under `data/raw/`.
 
-- Connect to the BRB website
-- Find the newest data file
-- Download it to your computer in the `data/raw/importation_bif` folder
+### 2. Transform (Parse)
 
-## Step 2: Processing the Data
+The transformation happens in two steps:
 
-After downloading the data, you need to process it into a more useful format. This happens in two steps:
+#### 2.1 Parse Raw Data
 
-### Step 2.1: Parse Excel to CSV
-
-The parser will automatically find and process the most recent Excel file in the `data/raw/importation_bif` folder.
-
-Run this command:
-
+Run the parsers to convert raw data into a standardized CSV format:
 ```bash
-poetry run python src/parse/importation_bif/parser.py
+poetry run python src/parse/<source>/parser.py
 ```
 
-This will:
+Each parser:
+- Reads raw data from `data/raw/<source>`
+- Applies source-specific transformations
+- Validates against reference data in `src/parse/<source>/`
+- Outputs to `data/parsed/<source>/<date>-monthly.csv`
 
-- Find the most recent Excel file in `data/raw/importation_bif`
-- Extract data for countries specified in `countries.csv`
-- Convert dates to YYYY-MM format
-- Convert all numeric values to decimal format
-- Save the processed data in `data/parsed/importation_bif` as:
-  - A CSV file named with today's date (e.g., `2025-08-03-monthly.csv`)
-  - Format: continent,country,YYYY-MM columns with decimal values
+#### 2.2 Transform Data
 
-The output CSV will contain:
-
-- Only data for countries listed in `countries.csv`
-- All numeric values in decimal format
-- Empty or invalid values replaced with 0.0
-- Dates in YYYY-MM format
-
-### Step 2.2: Transform CSV to JSON
-
-After generating the CSV, you need to transform it into a JSON format grouped by continents. Run:
-
+Transform parsed data into aggregated JSON format:
 ```bash
-poetry run python src/parse/importation_bif/transform.py
+poetry run python src/parse/<source>/transform.py
 ```
 
-This will:
+This step:
+- Reads the latest parsed CSV
+- Applies grouping and aggregations
+- Outputs to `data/parsed/<source>/<date>-monthly-transformed.json`
 
-- Find the most recent CSV file in `data/parsed/importation_bif`
-- Group the data by continent, summing up values for all countries in each continent
-- Save the transformed data as a JSON file with today's date (e.g., `2025-08-03-monthly-transformed.json`)
-- Format: Hierarchical structure of year → month → continent → value
+### 3. Load (Website Data)
 
-The output JSON will contain:
-
-- Data grouped by continents (AFRIQUE, AMERIQUE, ASIE, EUROPE, OCEANIE)
-- Monthly totals for each continent
-- All values aggregated from country-level data
-- Dates organized by year and month names
-
-### Step 2.3: Generate Chart Data
-
-Finally, transform the continent-grouped data into a format suitable for visualization. Run:
-
+Generate website-ready visualization data:
 ```bash
-poetry run python src/parse/importation_bif/load.py
+poetry run python src/parse/<source>/load.py
 ```
 
-This will:
+This final step:
+- Reads transformed JSON data
+- Generates chart configurations
+- Outputs to `website/data/` for the website to consume
 
-- Read the most recent transformed JSON file from `data/parsed/importation_bif`
-- Generate chart configuration for each year's data
-- Create datasets for each continent with consistent colors:
-  - AFRIQUE (Green)
-  - AMERIQUE (Blue)
-  - ASIE (Red)
-  - EUROPE (Yellow)
-  - OCEANIE (Purple)
-- Save the chart data to `website/data/monthly_imports_by_country.json`
+## Project Structure
 
-The output chart configuration will include:
-
-- Stacked bar charts showing monthly imports by continent
-- Consistent color scheme for better visualization
-- Monthly labels (Jan-Dec)
-- Year-specific titles and descriptions
-- Responsive chart settings
-- Legend positioned at the top
+```
+analytics/
+├── config/           # Configuration files
+├── data/            # Data files
+│   ├── raw/         # Raw downloaded data
+│   └── parsed/      # Processed data files
+├── docs/            # Documentation
+└── src/             # Source code
+    ├── etl/         # Data download scripts
+    └── parse/       # Data parsing scripts
+        └── <source> # Source-specific parsers
+```
 
 ## Common Problems and Solutions
 
 1. **Error: "No module named 'something'"**
-
-   - This means you're not using Poetry to run the script
-   - Always use `poetry run` before your command
+   - Always use `poetry run` before commands
 
 2. **Can't find Poetry command**
+   ```bash
+   export PATH="$HOME/.local/bin:$PATH"
+   ```
+   Add to `~/.zshrc` for permanent setup
 
-   - You might need to add Poetry to your PATH
-   - Run this command:
-     ```bash
-     export PATH="$HOME/.local/bin:$PATH"
-     ```
-   - For permanent setup, add this line to your `~/.zshrc` file
-
-3. **Can't find the input file**
-   - Make sure you're using the correct path to the Excel file
-   - Look in the `data/raw/importation_bif` folder for the latest downloaded file
+3. **Can't find input files**
+   - Check raw data folders
+   - Verify download step completed successfully
 
 ## Need Help?
 
-If you have any problems:
-
-1. Make sure you're using `poetry run` before your commands
-2. Check that all files exist in the correct folders
-3. Make sure you installed all packages with `poetry install`
+Troubleshooting steps:
+1. Use `poetry run` for all commands
+2. Verify file paths and folder structure
+3. Check `poetry install` completed successfully
+4. Use Git Bash on Windows

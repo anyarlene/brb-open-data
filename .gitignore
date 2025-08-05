@@ -5,4 +5,9 @@ elt_scripts/
 data/*
 .DS_Store
 
+# VS Code and IDE settings
+.vscode/
+analytics/.vscode/
+analytics/pyrightconfig.json
+
 analytics/data/*
