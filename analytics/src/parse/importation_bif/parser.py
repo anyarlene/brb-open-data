@@ -7,10 +7,10 @@ import re
 logger = logging.getLogger(__name__)
 
 class ImportationParser:
-    def __init__(self, data_root: Path):
+    def __init__(self, data_root: Path, source_dir: str):
         self.data_root = Path(data_root)
-        self.raw_dir = self.data_root / "data" / "raw" / "importation_bif"
-        self.parsed_dir = self.data_root / "data" / "parsed" / "importation_bif"
+        self.raw_dir = self.data_root / "data" / "raw" / source_dir
+        self.parsed_dir = self.data_root / "data" / "parsed" / source_dir
         self.parsed_dir.mkdir(parents=True, exist_ok=True)
 
         # Load country reference data
@@ -33,13 +33,7 @@ class ImportationParser:
         except:
             return col
 
-    def parse_excel(self) -> pd.DataFrame:
-        # Find the most recent Excel file
-        excel_files = list(self.raw_dir.glob("*.xlsx"))
-        if not excel_files:
-            raise FileNotFoundError(f"No Excel files found in {self.raw_dir}")
-
-        excel_path = sorted(excel_files)[-1]
+    def parse_excel(self, excel_path: Path) -> pd.DataFrame:
         logger.info(f"Processing file: {excel_path}")
 
         # Read the Excel file
@@ -66,7 +60,7 @@ class ImportationParser:
 
         df = df[valid_countries].copy()
 
-                # Add continent column
+        # Add continent column
         df['continent'] = df['country'].map(self.country_map)
 
         # Convert numeric columns to float, replacing non-numeric and empty values with 0.0
@@ -97,11 +91,31 @@ def main():
 
     try:
         project_root = Path(__file__).parents[3]
-        parser = ImportationParser(project_root)
-        df = parser.parse_excel()
-        parser.save_csv(df)
+        
+        # Process importation_categories directory
+        source_dir = "importation_categories"
+        parser = ImportationParser(project_root, source_dir)
+        
+        if not parser.raw_dir.exists():
+            logger.warning(f"Directory not found: {parser.raw_dir}")
+            return
+
+        excel_files = list(parser.raw_dir.glob("*.xls*"))  # matches both .xls and .xlsx
+        if not excel_files:
+            logger.warning(f"No Excel files found in {parser.raw_dir}")
+            return
+
+        # Process each file in the directory
+        for excel_file in sorted(excel_files):
+            try:
+                df = parser.parse_excel(excel_file)
+                parser.save_csv(df)
+            except Exception as e:
+                logger.error(f"Error processing {excel_file}: {str(e)}")
+                continue
+
     except Exception as e:
-        logger.error(f"Error processing file: {str(e)}")
+        logger.error(f"Error processing files: {str(e)}")
         raise
 
 if __name__ == "__main__":
