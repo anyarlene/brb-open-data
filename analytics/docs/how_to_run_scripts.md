@@ -36,7 +36,7 @@ This will:
 
 - Connect to the BRB website
 - Find the newest data file
-- Download it to your computer in the `data/raw/importation_bif` folder
+- Download it to your computer in the `data/raw/importation_countries` folder
 
 ## Step 2: Processing the Data
 
@@ -44,7 +44,7 @@ After downloading the data, you need to process it into a more useful format. Th
 
 ### Step 2.1: Parse Excel to CSV
 
-The parser will automatically find and process the most recent Excel file in the `data/raw/importation_bif` folder.
+The parser will automatically find and process the most recent Excel file in the `data/raw/importation_countries` folder.
 
 Run this command:
 
@@ -54,11 +54,11 @@ poetry run python src/parse/importation_bif/parser.py
 
 This will:
 
-- Find the most recent Excel file in `data/raw/importation_bif`
+- Find the most recent Excel file in `data/raw/importation_countries`
 - Extract data for countries specified in `countries.csv`
 - Convert dates to YYYY-MM format
 - Convert all numeric values to decimal format
-- Save the processed data in `data/parsed/importation_bif` as:
+- Save the processed data in `data/parsed/importation_countries` as:
   - A CSV file named with today's date (e.g., `2025-08-03-monthly.csv`)
   - Format: continent,country,YYYY-MM columns with decimal values
 
@@ -79,7 +79,7 @@ poetry run python src/parse/importation_bif/transform.py
 
 This will:
 
-- Find the most recent CSV file in `data/parsed/importation_bif`
+- Find the most recent CSV file in `data/parsed/importation_countries`
 - Group the data by continent, summing up values for all countries in each continent
 - Save the transformed data as a JSON file with today's date (e.g., `2025-08-03-monthly-transformed.json`)
 - Format: Hierarchical structure of year → month → continent → value
@@ -101,7 +101,7 @@ poetry run python src/parse/importation_bif/load.py
 
 This will:
 
-- Read the most recent transformed JSON file from `data/parsed/importation_bif`
+- Read the most recent transformed JSON file from `data/parsed/importation_countries`
 - Generate chart configuration for each year's data
 - Create datasets for each continent with consistent colors:
   - AFRIQUE (Green)
@@ -138,7 +138,7 @@ The output chart configuration will include:
 
 3. **Can't find the input file**
    - Make sure you're using the correct path to the Excel file
-   - Look in the `data/raw/importation_bif` folder for the latest downloaded file
+   - Look in the `data/raw/importation_countries` folder for the latest downloaded file
 
 ## Need Help?
 
