@@ -12,7 +12,7 @@ def transform_data():
     analytics_dir = os.path.dirname(os.path.dirname(os.path.dirname(script_dir)))
 
     # Read the source data
-    input_path = os.path.join(analytics_dir, "data/parsed/importation_bif/2025-08-03-monthly-transformed.json")
+    input_path = os.path.join(analytics_dir, "data/parsed/importation_countries/2025-08-03-monthly-transformed.json")
     with open(input_path, "r") as f:
         source_data = json.load(f)
 

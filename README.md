@@ -30,7 +30,7 @@ The processing pipeline includes:
 
 #### Data Models
 
-- `importation_bif_data_model.py`: Processes importation data in BIF
+- `importation_countries_data_model.py`: Processes importation data by countries
 - `importation_tons_data_model.py`: Processes importation data in metric tons
 - `inflation_data_model.py`: Processes inflation rate data
 

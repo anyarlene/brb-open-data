@@ -92,8 +92,8 @@ def main():
     try:
         project_root = Path(__file__).parents[3]
         
-        # Process importation_categories directory
-        source_dir = "importation_categories"
+        # Process importation_countries directory
+        source_dir = "importation_countries"
         parser = ImportationParser(project_root, source_dir)
         
         if not parser.raw_dir.exists():

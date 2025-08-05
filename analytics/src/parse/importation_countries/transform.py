@@ -8,7 +8,7 @@ def transform_csv_to_json():
     project_root = Path(__file__).parents[3]
 
     # Find the most recent CSV file
-    parsed_dir = project_root / "data" / "parsed" / "importation_bif"
+    parsed_dir = project_root / "data" / "parsed" / "importation_countries"
     csv_files = list(parsed_dir.glob("*-monthly.csv"))
     if not csv_files:
         raise FileNotFoundError(f"No CSV files found in {parsed_dir}")
