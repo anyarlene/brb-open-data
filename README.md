@@ -1,68 +1,126 @@
 # brb-open-data
 
-This repository contains an automated data pipeline for collecting, processing, and analyzing economic data from the Bank of the Republic of Burundi ([BRB](https://www.brb.bi/)). The project focuses on transforming raw economic indicators into structured, analyzable datasets with a particular emphasis on importation data and inflation rates.
+This repository contains an automated data pipeline for collecting, processing, and analyzing import data from the Bank of the Republic of Burundi ([BRB](https://www.brb.bi/)). The project transforms raw Excel files from BRB into structured datasets and provides web-based visualizations.
+
+## Overview
+
+The project follows a standard ETL (Extract, Transform, Load) pipeline to process BRB import data:
+
+1. **Extract**: Downloads Excel files from BRB website
+2. **Transform**: Parses and standardizes the data
+3. **Load**: Generates web-ready visualization data
+
+## Quick Start
+
+### Prerequisites
+
+- Python 3.12 or newer
+- Poetry (package manager)
+- Git Bash (recommended for Windows)
+
+### Setup
+
+1. Install Poetry:
+```bash
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+2. Install dependencies:
+```bash
+poetry install
+```
+
+### Running the Pipeline
+
+1. **Download data**:
+```bash
+poetry run download-all
+```
+
+2. **Parse data**:
+```bash
+poetry run python src/parse/<source>/parser.py
+```
+
+3. **Transform data**:
+```bash
+poetry run python src/parse/<source>/transform.py
+```
+
+4. **Generate website data**:
+```bash
+poetry run python src/parse/<source>/load.py
+```
 
 ## Project Structure
 
-The project is organized into several key components:
-
-### 1. Data Collection (ETL Pipeline)
-
-The ETL (Extract, Transform, Load) pipeline automatically:
-
-- Downloads data from BRB's website using configurable source definitions
-- Versions and stores raw data files with timestamps
-- Processes multiple economic indicators including:
-  - Importation data in BIF (Burundian Franc)
-  - Importation data in Tons
-  - Inflation rates
-
-### 2. Data Processing
-
-The processing pipeline includes:
-
-#### Parsing and Normalization
-
-- Handles complex Excel file structures with multiple sheets
-- Normalizes French abbreviations and special characters
-- Processes hierarchical data (continents, subcontinents, countries)
-- Generates both structured (CSV/Excel) and JSON outputs
-
-#### Data Models
-
-- `importation_countries_data_model.py`: Processes importation data by countries
-- `importation_tons_data_model.py`: Processes importation data in metric tons
-- `inflation_data_model.py`: Processes inflation rate data
-
-### 3. Data Analysis & Visualization
-
-The project includes several visualization tools for analyzing the processed data:
-
-#### Inflation Analysis
-
-- `annual_and_monthly_inflation_dashboard.py`: Combined view of annual and monthly trends
-- `monthly_inflation_dashboard.py`: Detailed monthly inflation analysis
-
-#### Import Analysis
-
-- `importation_tons_time_series.py`: Time series analysis of import volumes
-- `heatmap_importation_tons.py`: Heatmap visualization of import patterns
-
-## Technical Details
-
-- Built with Python using pandas for data processing
-- Automated data downloads with configurable source definitions
-- Secure HTTPS connections with certificate verification
-- Structured data output in multiple formats (Excel, CSV, JSON)
-- Versioned data storage with timestamp-based naming
+```
+├── analytics/              # Data processing pipeline
+│   ├── config/             # Configuration files
+│   │   └── sources.yml     # Data source definitions
+│   ├── data/               # Data files
+│   │   ├── raw/            # Downloaded Excel files
+│   │   └── parsed/         # Processed CSV/JSON files
+│   ├── docs/               # Documentation
+│   └── src/                # Source code
+│       ├── etl/            # Download scripts
+│       └── parse/          # Data parsing scripts
+│           ├── importation_countries/    # Country-based import data
+│           └── importation_categories/   # Category-based import data
+└── website/                # Data visualization
+    ├── data/               # Chart data files
+    ├── js/                 # JavaScript charts
+    └── index.html          # Main dashboard
+```
 
 ## Data Sources
 
-Currently configured data sources:
+Currently configured sources:
 
-- BRB Importation Data (https://www.brb.bi/node/477)
-- Additional sources can be configured in `config/sources.yml`
+- **Import by Countries**: Data from https://www.brb.bi/node/477
+- **Import by Categories**: Data from https://www.brb.bi/node/343
 
-## Getting Started
+## Data Processing
 
-For information on how to run the scripts and process data, please refer to the documentation in `docs/how_to_run_scripts.md`.
+### Pipeline Steps
+
+Each data source follows the same three-step process:
+
+1. **Parser**: Converts Excel → standardized CSV
+   - Validates country names against reference data
+   - Maps countries to continents
+   - Handles French text normalization
+
+2. **Transform**: Converts CSV → aggregated JSON
+   - Groups data by continent and time period
+   - Calculates aggregations and trends
+
+3. **Load**: Generates website-ready data
+   - Creates chart configurations
+   - Outputs JSON files for web visualization
+
+## Technical Details
+
+- **Language**: Python 3.12+
+- **Package Management**: Poetry
+- **Data Processing**: pandas for Excel/CSV manipulation
+- **Output Formats**: CSV, JSON
+- **Web Visualization**: Custom JavaScript charts
+- **Configuration**: YAML-based source definitions
+
+## Troubleshooting
+
+Common issues and solutions:
+
+1. **"No module named 'something'"** - Always use `poetry run` before commands
+2. **Can't find Poetry command** - Add Poetry to your PATH or use full path
+3. **Can't find input files** - Verify download step completed successfully
+
+## Documentation
+
+For detailed setup and usage instructions, see:
+- [How to Run Scripts](analytics/docs/how_to_run_scripts.md) - Complete setup and usage guide
+
+## Contributing
+
+The project uses Poetry for dependency management. Always use `poetry run` when executing Python scripts to ensure proper environment isolation.
