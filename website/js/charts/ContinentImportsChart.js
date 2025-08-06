@@ -1,7 +1,4 @@
-import { BaseChart } from "./BaseChart.js";
-import { getChartConfig } from "./chartConfig.js";
-
-export class ContinentImportsChart extends BaseChart {
+class ContinentImportsChart extends BaseChart {
   constructor(containerId) {
     super(containerId);
     this.data = null;

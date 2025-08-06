@@ -1,4 +1,4 @@
-export const getChartConfig = (type, data, options, title, year) => {
+const getChartConfig = (type, data, options, title, year) => {
   // Professional color palette for charts
   const chartColors = [
     "#2a6f86", // Primary blue

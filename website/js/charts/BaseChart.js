@@ -1,4 +1,4 @@
-export class BaseChart {
+class BaseChart {
   constructor(containerId) {
     this.containerId = containerId;
     this.chart = null;

@@ -1,5 +1,3 @@
-import { ContinentImportsChart } from "./charts/ContinentImportsChart.js";
-
 // Initialize all charts when the document is ready
 document.addEventListener("DOMContentLoaded", async () => {
   // Initialize the continent imports chart
