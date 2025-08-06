@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "brb-analytics"
+version = "0.1.0"
+description = "Analytics tools for BRB Open Data"
+authors = ["anyarlene <anyarlene.niyubahwe@hotmail.com>"]
+readme = "README.md"
+license = "MIT"
+packages = [{include = "analytics/src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.12,<4.0"
+requests = ">=2.32.4,<3.0.0"
+beautifulsoup4 = ">=4.13.4,<5.0.0"
+pyyaml = ">=6.0.2,<7.0.0"
+pandas = "^2.3.0"
+openpyxl = "^3.1.5"
+matplotlib = "^3.7.2"
+numpy = "^1.25.2"
+python-decouple = "^3.8.0"
+xlrd = "^2.0.2"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0"
+black = "^23.0"
+isort = "^5.0"
+flake8 = "^6.0"
+pre-commit = "^3.0"
+
+[tool.poetry.scripts]
+download-all = "src.etl.download_manager:main"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
