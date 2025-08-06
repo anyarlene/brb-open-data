@@ -5,6 +5,11 @@ import argparse
 
 def run_server(port=8000, bind="0.0.0.0"):
     """Run a simple HTTP server that can be accessed from other machines."""
+    # Change to the website directory
+    import os
+    from pathlib import Path
+    os.chdir(Path(__file__).parent)
+    
     handler = http.server.SimpleHTTPRequestHandler
     
     with socketserver.TCPServer((bind, port), handler) as httpd:

@@ -78,7 +78,17 @@
         <!-- Data Visualizations -->
         <section id="visualizations" class="section fade-in">
           <h2>Data Visualizations</h2>
-          <div class="visualization-container">
+          <div class="visualization-selector">
+            <div class="dropdown">
+              <button class="dropdown-btn">Statistics ▾</button>
+              <div class="dropdown-content">
+                <button class="viz-btn active" data-viz="continent">Monthly Imports by Continent</button>
+                <button class="viz-btn" data-viz="category">Monthly Imports by Category</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="continentViz" class="visualization-container active">
             <div class="chart-header">
               <h3>Monthly Imports by Continent</h3>
               <h2 class="year-display">
@@ -100,6 +110,34 @@
                   Download CSV
                 </a>
                 <a href="data/exports/monthly_imports_by_continent.xlsx" download class="download-btn">
+                  Download Excel
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div id="categoryViz" class="visualization-container">
+            <div class="chart-header">
+              <h3>Monthly Imports by Category</h3>
+              <h2 class="year-display">
+                <span id="categorySelectedYear"></span>
+              </h2>
+            </div>
+
+            <div class="chart-container">
+              <canvas id="categoryChart"></canvas>
+            </div>
+
+            <div class="slider-section">
+              <input type="range" id="categoryYearSlider" class="year-slider" />
+            </div>
+
+            <div class="download-section">
+              <div class="download-buttons">
+                <a href="data/exports/monthly_imports_by_category.csv" download class="download-btn">
+                  Download CSV
+                </a>
+                <a href="data/exports/monthly_imports_by_category.xlsx" download class="download-btn">
                   Download Excel
                 </a>
               </div>
@@ -165,6 +203,7 @@
     <script src="js/charts/chartConfig.js"></script>
     <script src="js/charts/BaseChart.js"></script>
     <script src="js/charts/ContinentImportsChart.js"></script>
+    <script src="js/charts/CategoryImportsChart.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

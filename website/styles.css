@@ -222,7 +222,104 @@ p {
 }
 
 /* Visualization Container */
+.visualization-selector {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  padding: 0 1rem;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-btn {
+  padding: 0.75rem 2rem;
+  background: var(--primary-color);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 1.1rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dropdown-btn:hover {
+  background: var(--primary-light);
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background: var(--white);
+  min-width: 300px;
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-sm);
+  z-index: 1000;
+  margin-top: 0.5rem;
+  border: 1px solid var(--gray-200);
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+}
+
+/* Remove hover behavior since we're using click */
+
+.dropdown-content .viz-btn {
+  display: block;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  text-align: center;
+  border: none;
+  background: var(--white);
+  color: var(--text-color);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.dropdown-content .viz-btn:last-child {
+  border-bottom: none;
+}
+
+.dropdown-content .viz-btn:hover {
+  background: var(--gray-100);
+}
+
+.dropdown-content .viz-btn.active {
+  background: var(--primary-light);
+  color: var(--white);
+}
+
+.viz-btn {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: var(--white);
+  color: var(--gray-700);
+  text-align: left;
+  cursor: pointer;
+  font-weight: 400;
+  transition: all 0.2s ease;
+}
+
+.viz-btn:hover {
+  background: var(--gray-100);
+}
+
+.viz-btn.active {
+  background: var(--primary-light);
+  color: var(--white);
+}
+
 .visualization-container {
+  display: none;
   background: var(--white);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
@@ -231,6 +328,10 @@ p {
   overflow-x: hidden;
   width: 100%;
   border: 1px solid var(--gray-200);
+}
+
+.visualization-container.active {
+  display: block;
 }
 
 @media (min-width: 768px) {

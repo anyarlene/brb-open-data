@@ -27,7 +27,7 @@ flake8 = "^6.0"
 pre-commit = "^3.0"
 
 [tool.poetry.scripts]
-download-all = "src.etl.download_manager:main"
+download-all = "analytics.src.etl.download_manager:main"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

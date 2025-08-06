@@ -238,10 +238,10 @@ def main():
         print(json.dumps(results, indent=2))
     else:
         for name, res in results.items():
-            if res["status"] == "ok":
-                print(f"✓ {name}: Successfully downloaded")
+            if res["status"] == "successful":
+                print(f"✓ {name}: {res['path']}")
             else:
-                print(f"✗ {name}: Download failed - {res['error']}")
+                print(f"✗ {name}: {res['path']}")
 
 if __name__ == "__main__":
     main()

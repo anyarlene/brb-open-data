@@ -6,20 +6,103 @@ from datetime import datetime
 logger = logging.getLogger(__name__)
 
 class ImportationCategoriesParser:
+    # Category mapping for visualization
+    category_mapping = {
+        '01': 'Food Products',  # Animals
+        '02': 'Food Products',  # Meat
+        '3,0': 'Food Products',  # Fish
+        '04': 'Food Products',  # Dairy
+        '07': 'Food Products',  # Vegetables
+        '08': 'Food Products',  # Fruits
+        '1001': 'Food Products',  # Wheat
+        '1005': 'Food Products',  # Corn
+        '1006': 'Food Products',  # Rice
+        '1101': 'Food Products',  # Flour
+        '1107': 'Food Products',  # Malt
+        '1209': 'Food Products',  # Seeds
+        '1302': 'Food Products',  # Plant extracts
+        '1507-1515': 'Food Products',  # Vegetable oils
+        '1517': 'Food Products',  # Margarine
+        '16': 'Food Products',  # Meat and fish preparations
+        '17019110-9910': 'Food Products',  # Sugar
+        '1704': 'Food Products',  # Confectionery
+        '190110': 'Food Products',  # Baby food
+        '1902': 'Food Products',  # Pasta
+        '190531,0': 'Food Products',  # Biscuits
+        '20': 'Food Products',  # Vegetable and fruit preparations
+        '21': 'Food Products',  # Various food preparations
+        '2203': 'Food Products',  # Beer
+        '2204': 'Food Products',  # Wine
+        '2205': 'Food Products',  # Vermouth
+        '2207-08': 'Food Products',  # Liquors
+        '2401': 'Food Products',  # Tobacco
+        '240220': 'Food Products',  # Cigarettes
+
+        '28': 'Industrial Goods',  # Inorganic chemicals
+        '29': 'Industrial Goods',  # Organic chemicals
+        '31': 'Industrial Goods',  # Fertilizers
+        '32': 'Industrial Goods',  # Dyes
+        '37': 'Industrial Goods',  # Photographic products
+        '380810': 'Industrial Goods',  # Insecticides
+        '380840': 'Industrial Goods',  # Disinfectants
+        '39': 'Industrial Goods',  # Plastics
+        '48': 'Industrial Goods',  # Paper and cardboard
+        '5206-12': 'Industrial Goods',  # Cotton fabrics
+        '5407- 08': 'Industrial Goods',  # Synthetic fabrics
+        '5512-16': 'Industrial Goods',  # Synthetic fiber fabrics
+        '5607': 'Industrial Goods',  # Ropes
+        '5903': 'Industrial Goods',  # Impregnated fabrics
+
+        '2501': 'Raw Materials',  # Salt
+        '252310': 'Raw Materials',  # Clinker cement
+        '252329': 'Raw Materials',  # Portland cement
+        '2710113-14-1911': 'Raw Materials',  # Aviation fuel
+        '27101111-15': 'Raw Materials',  # Other fuel
+        '27101921-23-31-39': 'Raw Materials',  # Gas oil and fuel oil
+        '27101912-14': 'Raw Materials',  # Petroleum
+        '2710119-1910-19-26': 'Raw Materials',  # Oils and greases
+        '271091-99-1941-42': 'Raw Materials',  # Oil waste
+        '2711-2715': 'Raw Materials',  # Asphalt, bitumen
+        '44': 'Raw Materials',  # Wood
+        '72': 'Raw Materials',  # Iron and steel
+        '76': 'Raw Materials',  # Aluminum
+
+        '30': 'Consumer Goods',  # Pharmaceuticals
+        '33': 'Consumer Goods',  # Perfumery
+        '3401-05': 'Consumer Goods',  # Soaps
+        '3605': 'Consumer Goods',  # Matches
+        '42': 'Consumer Goods',  # Leather goods
+        '49': 'Consumer Goods',  # Books
+        '61': 'Consumer Goods',  # Knitted clothing
+        '62': 'Consumer Goods',  # Other clothing
+        '6308-10': 'Consumer Goods',  # Used clothing
+        '64': 'Consumer Goods',  # Footwear
+        '8212': 'Consumer Goods',  # Razors
+        '9401-04': 'Consumer Goods',  # Furniture
+        '95': 'Consumer Goods',  # Toys and sports
+        '9603': 'Consumer Goods',  # Brooms
+        '9608': 'Consumer Goods',  # Pens
+        '9610': 'Consumer Goods',  # Slates and boards
+
+        '84': 'Machinery',  # Mechanical equipment
+        '8501': 'Machinery',  # Generators
+        '8504': 'Machinery',  # Transformers
+        '8506-07': 'Machinery',  # Batteries
+        '8525-29': 'Machinery',  # Radio equipment
+        '8701': 'Machinery',  # Tractors
+        '8702-03': 'Machinery',  # Cars
+        '8704': 'Machinery',  # Trucks
+        '8708': 'Machinery',  # Vehicle parts
+        '8711-14': 'Machinery',  # Bikes and motorcycles
+        '90': 'Machinery',  # Optical equipment
+        '92': 'Machinery'  # Musical instruments
+    }
+
     def __init__(self, data_root: Path):
         self.data_root = Path(data_root)
         self.raw_dir = self.data_root / "data" / "raw" / "importation_categories"
         self.parsed_dir = self.data_root / "data" / "parsed" / "importation_categories"
         self.parsed_dir.mkdir(parents=True, exist_ok=True)
-
-        # Load category reference data
-        categories_file = Path(__file__).parent / "categories.csv"
-        self.category_map = pd.read_csv(categories_file, sep='\t', dtype={'code': str})
-        # Clean the codes in the mapping file
-        self.category_map['code'] = self.category_map['code'].str.strip()
-        # Handle decimal numbers in codes
-        self.category_map['code'] = self.category_map['code'].apply(lambda x: x.split(',')[0] if ',' in x else x)
-        self.category_map = self.category_map.set_index('code')['description'].to_dict()
 
     def format_column_name(self, col: str) -> str:
         """Format column name to YYYY-MM format if it's a date"""
@@ -77,11 +160,11 @@ class ImportationCategoriesParser:
         # Filter out empty codes and metadata rows
         df = df[df['code'].str.len() > 0].copy()
 
-        # Filter rows to only include categories from our reference list
-        df = df[df['code'].isin(self.category_map.keys())].copy()
+        # Filter rows to only include categories from our mapping
+        df = df[df['code'].isin(self.category_mapping.keys())].copy()
 
-        # Add description column
-        df['description'] = df['code'].map(self.category_map)
+        # Add description column using our category mapping
+        df['description'] = df['code'].map(self.category_mapping)
 
         # Convert numeric columns to float, replacing non-numeric and empty values with 0.0
         numeric_cols = [col for col in df.columns if col not in ['code', 'description']]
