@@ -256,6 +256,36 @@ p {
   font-size: clamp(1.25rem, 2vw, 1.5rem);
 }
 
+.download-section {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--gray-200);
+  display: flex;
+  justify-content: flex-start;
+}
+
+.download-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.download-btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-light);
+  color: var(--white);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.download-btn:hover {
+  background-color: var(--primary-color);
+  transform: translateY(-1px);
+}
+
 .year-display {
   font-size: clamp(1.5rem, 3vw, 2rem);
   color: var(--secondary-color);
@@ -391,6 +421,16 @@ p {
   .chart-header {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .download-section {
+    justify-content: center;
+  }
+
+  .download-buttons {
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
   }
 
   .container {

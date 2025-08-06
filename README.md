@@ -32,7 +32,14 @@ poetry install
 
 ### Running the Pipeline
 
-1. **Download data**:
+1. **Generate export files**:
+```bash
+cd website
+poetry run python js/utils/export_data.py
+```
+This will generate CSV and XLSX files for the website's download functionality.
+
+2. **Download data**:
 ```bash
 poetry run download-all
 ```
