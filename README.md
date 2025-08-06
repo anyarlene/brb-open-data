@@ -77,15 +77,8 @@ poetry run python src/parse/<source>/load.py
 └── website/                # Data visualization
     ├── data/               # Chart data files
     ├── js/                 # JavaScript charts
-    └── index.html          # Main dashboard
+    └── index.html         # Main dashboard
 ```
-
-## Data Sources
-
-Currently configured sources:
-
-- **Import by Countries**: Data from https://www.brb.bi/node/477
-- **Import by Categories**: Data from https://www.brb.bi/node/343
 
 ## Data Processing
 
