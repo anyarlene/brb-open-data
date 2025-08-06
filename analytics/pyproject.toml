@@ -28,6 +28,8 @@ pre-commit = "^3.0"
 
 [tool.poetry.scripts]
 download-all = "src.etl.download_manager:main"
+load-database = "src.parse.database.db_load:main"
+generate-sql-charts = "src.parse.database.sql_load:main"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
