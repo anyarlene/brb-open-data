@@ -120,6 +120,7 @@ Common issues and solutions:
 
 For detailed setup and usage instructions, see:
 - [How to Run Scripts](analytics/docs/how_to_run_scripts.md) - Complete setup and usage guide
+- [Running Local Server](analytics/docs/running_local_server.md) - Instructions for running and accessing the website locally
 
 ## Contributing
 
